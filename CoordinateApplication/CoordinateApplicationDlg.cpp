@@ -37,7 +37,6 @@ CCoordinateApplicationDlg::CCoordinateApplicationDlg(CWnd* pParent /*=NULL*/)
 	, coordinate_point3_x(0)
 	, coordinate_point3_y(0)
 	, coordinate_point3_z(0)
-	, m_pallet_use_base_coordinate(TRUE)
 	, m_point1_pallet_x(0)
 	, m_point1_pallet_y(0)
 	, m_point1_pallet_z(0)
@@ -49,10 +48,10 @@ CCoordinateApplicationDlg::CCoordinateApplicationDlg(CWnd* pParent /*=NULL*/)
 	, m_point3_pallet_z(0)
 	, m_x_amount_pallet(0)
 	, m_y_amount_pallet(0)
-//	, m_id_pallet(0)
 	, m_x_lenght_pallet(0)
 	, m_y_lenght_pallet(0)
 	, m_coordinate_note(_T("机构坐标系"))
+	, m_radio_set_pallet_mode(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
@@ -81,9 +80,9 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_BASE_COORD, m_comboBox_base_coordinate);
 	//  DDX_Control(pDX, IDC_COMBO_CHANGE_COORD, m);
 	DDX_Control(pDX, IDC_COMBO_CHANGE_COORD, m_comboBox_change_coordinate);
-	DDX_Check(pDX, IDC_CHECK_PALLET_USE_BASE, m_pallet_use_base_coordinate);
+	//	DDX_Check(pDX, IDC_CHECK_PALLET_USE_BASE, m_pallet_use_base_coordinate);
 	//	DDX_Control(pDX, IDC_LIST2, m_listBox_coordinate);
-//	DDX_Control(pDX, IDC_COMBO_COORDINATE_TYPE, m_combo_coordinate_type);
+	//	DDX_Control(pDX, IDC_COMBO_COORDINATE_TYPE, m_combo_coordinate_type);
 	DDX_Control(pDX, IDC_COMBO_PALLET_IN_COORD, m_combo_pallet_in_coordinate);
 	DDX_Control(pDX, IDC_COMBO_PALLET_BASE_COORD, m_combo_pallet_base_coordinate);
 	DDX_Control(pDX, IDC_COMBO_SEL_PALLET, m_combo_show_pallet);
@@ -107,6 +106,9 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, m_listCtrl_pallets);
 	DDX_Control(pDX, IDC_COMBO_PALLET_SHOW_COORDINATE, m_comboBox_pallet_show_coordinate);
 	DDX_Text(pDX, IDC_EDIT1, m_coordinate_note);
+	DDX_Radio(pDX, IDC_RADIO_SET_PALLET_AUTO, m_radio_set_pallet_mode);
+	DDX_Control(pDX, IDC_COMBO_COPY_PALLET, m_comboBox_copy_pallet);
+	DDX_Control(pDX, IDC_COMBO_CHANGE_PALLET, m_comboBox_change_pallet);
 }
 
 BEGIN_MESSAGE_MAP(CCoordinateApplicationDlg, CDialogEx)
@@ -114,13 +116,15 @@ BEGIN_MESSAGE_MAP(CCoordinateApplicationDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_RADIO_MANUAL, &CCoordinateApplicationDlg::OnBnClickedRadioManual)
 	ON_BN_CLICKED(IDC_RADIO_AUTO, &CCoordinateApplicationDlg::OnBnClickedRadioAuto)
-	ON_BN_CLICKED(IDC_CHECK_PALLET_USE_BASE, &CCoordinateApplicationDlg::OnBnClickedCheckPalletUseBase)
 	ON_BN_CLICKED(IDC_BUTTON_CREATE_COORD, &CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON_CHANGE_COORD, &CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord)
 	ON_BN_CLICKED(IDC_BUTTON_CREATE_PALLET, &CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet)
 	ON_CBN_SELCHANGE(IDC_COMBO_SEL_PALLET, &CCoordinateApplicationDlg::OnCbnSelchangeComboSelPallet)
 	ON_CBN_SELCHANGE(IDC_COMBO_PALLET_SHOW_COORDINATE, &CCoordinateApplicationDlg::OnCbnSelchangeComboPalletShowCoordinate)
+	ON_BN_CLICKED(IDC_RADIO_SET_PALLET_AUTO, &CCoordinateApplicationDlg::OnBnClickedRadioSetPalletAuto)
+	ON_BN_CLICKED(IDC_RADIO_SET_PALLET_MANUAL, &CCoordinateApplicationDlg::OnBnClickedRadioSetPalletManual)
+	ON_BN_CLICKED(IDC_RADIO_SET_PALLET_COPY, &CCoordinateApplicationDlg::OnBnClickedRadioSetPalletCopy)
 END_MESSAGE_MAP()
 
 
@@ -159,8 +163,6 @@ BOOL CCoordinateApplicationDlg::OnInitDialog()
 	m_listCtrl_pallets.InsertColumn(4, _T("X坐标"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(5, _T("Y坐标"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(6, _T("Z坐标"), LVCFMT_CENTER, 100, -1);
-
-	//m_listCtrl_coordinate.EnsureVisible(m_List.GetItemCount() - 1, FALSE);
 
 	UpdateCoordinate();
 
@@ -208,25 +210,19 @@ HCURSOR CCoordinateApplicationDlg::OnQueryDragIcon()
 void CCoordinateApplicationDlg::OnBnClickedRadioManual()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	UpdateData(TRUE);
-	m_radio_setType = 0;
-	SetManualEnable(TRUE);
-	SetAutoEnable(FALSE);
-	UpdateData(FALSE);
+	SetCoordinateManualEnable(TRUE);
+	SetCoordinateAutoEnable(FALSE);
 }
 
 
 void CCoordinateApplicationDlg::OnBnClickedRadioAuto()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	UpdateData(TRUE);
-	m_radio_setType = 1;
-	SetManualEnable(FALSE);
-	SetAutoEnable(TRUE);
-	UpdateData(FALSE);
+	SetCoordinateManualEnable(FALSE);
+	SetCoordinateAutoEnable(TRUE);
 }
 
-void CCoordinateApplicationDlg::SetManualEnable(const BOOL &singal)
+void CCoordinateApplicationDlg::SetCoordinateManualEnable(const BOOL &singal)
 {
 	GetDlgItem(IDC_EDIT_TRANS_X)->EnableWindow(singal);
 	GetDlgItem(IDC_EDIT_TRANS_Y)->EnableWindow(singal);
@@ -237,7 +233,7 @@ void CCoordinateApplicationDlg::SetManualEnable(const BOOL &singal)
 	GetDlgItem(IDC_EDIT_RATIO)->EnableWindow(singal);
 }
 
-void CCoordinateApplicationDlg::SetAutoEnable(const BOOL &singal)
+void CCoordinateApplicationDlg::SetCoordinateAutoEnable(const BOOL &singal)
 {
 	GetDlgItem(IDC_EDIT_POINT1_BASE_X)->EnableWindow(singal);
 	GetDlgItem(IDC_EDIT_POINT1_BASE_Y)->EnableWindow(singal);
@@ -251,7 +247,18 @@ void CCoordinateApplicationDlg::SetAutoEnable(const BOOL &singal)
 	GetDlgItem(IDC_COMBO_BASE_COORD)->EnableWindow(singal);
 }
 
-void CCoordinateApplicationDlg::SetUseBaseEnable(const BOOL &singal)
+void CCoordinateApplicationDlg::SetPalletManualEnable(const BOOL &singal)
+{
+	
+
+	GetDlgItem(IDC_COMBO_PALLET_IN_COORD)->EnableWindow(singal);
+	GetDlgItem(IDC_EDIT_PALLET_X_LENGHT)->EnableWindow(singal);
+	GetDlgItem(IDC_EDIT_PALLET_Y_LENGHT)->EnableWindow(singal);
+
+	
+}
+
+void CCoordinateApplicationDlg::SetPalletAutoEnable(const BOOL &singal)
 {
 	GetDlgItem(IDC_EDIT_POINT1_PALLET_X)->EnableWindow(singal);
 	GetDlgItem(IDC_EDIT_POINT1_PALLET_Y)->EnableWindow(singal);
@@ -265,22 +272,12 @@ void CCoordinateApplicationDlg::SetUseBaseEnable(const BOOL &singal)
 	GetDlgItem(IDC_EDIT_POINT3_PALLET_Y)->EnableWindow(singal);
 	GetDlgItem(IDC_EDIT_POINT3_PALLET_Z)->EnableWindow(singal);
 
-	GetDlgItem(IDC_COMBO_PALLET_IN_COORD)->EnableWindow(!singal);
 	GetDlgItem(IDC_COMBO_PALLET_BASE_COORD)->EnableWindow(singal);
-
-	GetDlgItem(IDC_EDIT_PALLET_X_LENGHT)->EnableWindow(!singal);
-	GetDlgItem(IDC_EDIT_PALLET_Y_LENGHT)->EnableWindow(!singal);
-
 }
 
-
-void CCoordinateApplicationDlg::OnBnClickedCheckPalletUseBase()
+void CCoordinateApplicationDlg::SetPalletCopyEnable(const BOOL &singal)
 {
-	// TODO:  在此添加控件通知处理程序代码
-	m_pallet_use_base_coordinate = !m_pallet_use_base_coordinate;
-
-	SetUseBaseEnable(m_pallet_use_base_coordinate);
-	
+	GetDlgItem(IDC_COMBO_COPY_PALLET)->EnableWindow(singal);
 }
 
 
@@ -363,6 +360,8 @@ void CCoordinateApplicationDlg::AddCoordinate2List(const COORDINATE &coordinate)
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 7, str);
 	str.Format(_T("%f"), coordinate.zoom);
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 8, str);
+
+	m_listCtrl_coordinate.EnsureVisible(m_listCtrl_coordinate.GetItemCount() - 1, FALSE);
 }
 
 void CCoordinateApplicationDlg::UpdateCoordinate()
@@ -413,20 +412,28 @@ void CCoordinateApplicationDlg::UpadtePallet()
 	CString str;
 
 	m_combo_show_pallet.ResetContent();
+	m_comboBox_change_pallet.ResetContent();
+	m_comboBox_copy_pallet.ResetContent();
 
 	if (!m_pPallerOperator->ErgodicAllPallet(pallet, true))
 	{
 		str.Format(_T("%03u"), pallet.id_pallet);
 		m_combo_show_pallet.AddString(str);
+		m_comboBox_change_pallet.AddString(str);
+		m_comboBox_copy_pallet.AddString(str);
 
 		while (!m_pPallerOperator->ErgodicAllPallet(pallet))
 		{
 			str.Format(_T("%03u"), pallet.id_pallet);
 			m_combo_show_pallet.AddString(str);
+			m_comboBox_change_pallet.AddString(str);
+			m_comboBox_copy_pallet.AddString(str);
 		}
 	}
 
 	m_combo_show_pallet.SetCurSel(0);
+	m_comboBox_change_pallet.SetCurSel(0);
+	m_comboBox_copy_pallet.SetCurSel(0);
 
 	AddPallets2List();
 }
@@ -509,16 +516,18 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 	UpdateData(TRUE);
 
 	unsigned idOfPallet(0);
+	unsigned baseCoordinateIdOfPoint(0);
+	unsigned baseCoordinateIdOfPallet(0);
+	unsigned baseCoordinateIndex(m_combo_pallet_base_coordinate.GetCurSel());
 
-	if (m_pallet_use_base_coordinate)
+	switch (m_radio_set_pallet_mode)
 	{
-		unsigned baseCoordinateIdOfPoint(0);
-		unsigned index(m_combo_pallet_base_coordinate.GetCurSel());
-		if (!m_pCoordinateOperator->GetCoordianteId(index, baseCoordinateIdOfPoint))
+	case 0:
+		if (!m_pCoordinateOperator->GetCoordianteId(baseCoordinateIndex, baseCoordinateIdOfPoint))
 		{
 			DOBOT_POSITION
-				p1(baseCoordinateIdOfPoint), 
-				p2(baseCoordinateIdOfPoint), 
+				p1(baseCoordinateIdOfPoint),
+				p2(baseCoordinateIdOfPoint),
 				p3(baseCoordinateIdOfPoint);
 
 			p1.position.x = m_point1_pallet_x;
@@ -535,15 +544,18 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 
 			UpdateCoordinate();
 		}
-	}
-	else
-	{
-		unsigned baseCoordinateIdOfPallet(0);
-
+		break;
+	case 1:
 		if (m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
 			return;
 
 		m_pPallerOperator->CreatePallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet);
+		
+		break;
+	case 2:
+		break;
+	default:
+		break;
 	}
 
 	UpadtePallet();
@@ -605,4 +617,31 @@ void CCoordinateApplicationDlg::OnCbnSelchangeComboPalletShowCoordinate()
 {
 	// TODO: Add your control notification handler code here
 	AddPallets2List();
+}
+
+
+void CCoordinateApplicationDlg::OnBnClickedRadioSetPalletAuto()
+{
+	// TODO: Add your control notification handler code here
+	SetPalletAutoEnable(TRUE);
+	SetPalletManualEnable(FALSE);
+	SetPalletCopyEnable(FALSE);
+}
+
+
+void CCoordinateApplicationDlg::OnBnClickedRadioSetPalletManual()
+{
+	// TODO: Add your control notification handler code here
+	SetPalletAutoEnable(FALSE);
+	SetPalletManualEnable(TRUE);
+	SetPalletCopyEnable(FALSE);
+}
+
+
+void CCoordinateApplicationDlg::OnBnClickedRadioSetPalletCopy()
+{
+	// TODO: Add your control notification handler code here
+	SetPalletAutoEnable(FALSE);
+	SetPalletManualEnable(FALSE);
+	SetPalletCopyEnable(TRUE);
 }
