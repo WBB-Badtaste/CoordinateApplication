@@ -16,7 +16,6 @@ typedef struct _pallet
 		for (unsigned i = 0; i < zoneNumX; ++i)
 		for (unsigned j = 0; j < zoneNumY; ++j)
 		{
-			user_points[i][j].type = newPallet.user_points[i][j].type;
 			user_points[i][j].coordinate_id = newPallet.user_points[i][j].coordinate_id;
 			user_points[i][j].position = newPallet.user_points[i][j].position;
 		}
@@ -38,7 +37,6 @@ typedef struct _pallet
 		for (unsigned i = 0; i < zoneNumX; ++i)
 		for (unsigned j = 0; j < zoneNumY; ++j)
 		{
-			user_points[i][j].type = PALLET_COORDINATE;
 			user_points[i][j].coordinate_id = newCoordinateId;
 			user_points[i][j].position.x = xLenght / (zoneNumX - 1) * i;
 			user_points[i][j].position.y = yLenght / (zoneNumY - 1) * j;
@@ -78,7 +76,6 @@ typedef struct _pallet
 		for (unsigned i = 0; i < zoneNumX; ++i)
 		for (unsigned j = 0; j < zoneNumY; ++j)
 		{
-			user_points[i][j].type = newPallet.user_points[i][j].type;
 			user_points[i][j].coordinate_id = newPallet.user_points[i][j].coordinate_id;
 			user_points[i][j].position = newPallet.user_points[i][j].position;
 		}

@@ -9,9 +9,10 @@ CCoordinateOperator::CCoordinateOperator()
 	E3_VECTOR t;
 	E3_VECTOR r;
 	double zoom(1.0);
-	COORDINATE_TYPE type(WORLD_COORDINATE);
 	unsigned id;
-	SetCoordinate(id, WORLD_COORDINATE, t, r, zoom);
+
+	TCHAR *str(_T("世界坐标系"));
+	SetCoordinate(id, t, r, zoom, str, _tcslen(str));
 }
 
 CCoordinateOperator::~CCoordinateOperator()
@@ -27,17 +28,25 @@ unsigned CCoordinateOperator::GetNewIdOfTransitionMartix()
 														  //There is a bug when the id is too big.
 }
 
-unsigned CCoordinateOperator::SetCoordinate(unsigned &id, const COORDINATE_TYPE &type, const E3_VECTOR &t, const E3_VECTOR &r, const double &zoom)
+unsigned CCoordinateOperator::SetCoordinate
+(unsigned &id
+,const E3_VECTOR &t
+, const E3_VECTOR &r
+, const double &zoom
+, const TCHAR* const str
+, const unsigned &strSize)
 {
+	NOTE note(strSize, str);
+
 	if (id)
 	{
 		//if user input the id, check the martix is in the vector or not.
-		std::vector<TRANSITION_MATRIX>::iterator iter;
+		std::vector<COORDINATE>::iterator iter;
 		for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter)
 		{
 			if (iter->coordinate_id == id)
 			{
-				iter->Rest(type, t, r, zoom);
+				iter->Rest(t, r, zoom, note);
 				return 0;
 			}
 		}
@@ -45,25 +54,28 @@ unsigned CCoordinateOperator::SetCoordinate(unsigned &id, const COORDINATE_TYPE 
 
 	id = GetNewIdOfTransitionMartix();
 
-	if (id && type == WORLD_COORDINATE)
-		return 1;//Have to modify. the world coordinate is only one.
-
 	//Create a new martix base on the auto id.
-    TRANSITION_MATRIX transition_martix(type, t, r, id, zoom);
+    COORDINATE transition_martix(t, r, id, zoom, note);
 	m_vector_TM.push_back(transition_martix);
 
 	return 0;
 }
 
-unsigned CCoordinateOperator::SetCoordinate(unsigned &id, const COORDINATE_TYPE &type, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base)
+unsigned CCoordinateOperator::SetCoordinate
+( unsigned &id
+, const DOBOT_POSITION &p1_base
+, const DOBOT_POSITION &p2_base
+, const DOBOT_POSITION &p3_base
+, const TCHAR* const str
+, const unsigned &strSize)
 {
 	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
 		return 1;//Have to be modify.
 
 	//calculate the position of 3 points in the world coordinate.
-	DOBOT_POSITION p1_buffer(WORLD_COORDINATE_ID, WORLD_COORDINATE);
-	DOBOT_POSITION p2_buffer(WORLD_COORDINATE_ID, WORLD_COORDINATE);
-	DOBOT_POSITION p3_buffer(WORLD_COORDINATE_ID, WORLD_COORDINATE);
+	DOBOT_POSITION p1_buffer(WORLD_COORDINATE_ID);
+	DOBOT_POSITION p2_buffer(WORLD_COORDINATE_ID);
+	DOBOT_POSITION p3_buffer(WORLD_COORDINATE_ID);
 	ConvertCoordinate(p1_base, p1_buffer);
 	ConvertCoordinate(p2_base, p2_buffer);
 	ConvertCoordinate(p3_base, p3_buffer);
@@ -101,7 +113,7 @@ unsigned CCoordinateOperator::SetCoordinate(unsigned &id, const COORDINATE_TYPE 
 	//!!pay attention to let p2_buffer on x axis of target coordinate
 	r_target.z = -atan2(p2_buffer.position.y, p2_buffer.position.x);
 
-	return SetCoordinate(id, type, t_target, r_target, COORDINATE_DEFAULT_ZOOM);
+	return SetCoordinate(id, t_target, r_target, COORDINATE_DEFAULT_ZOOM, str, strSize );
 }
 
 //Have not be finlished.
@@ -114,9 +126,7 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 		return 1;//Have to be modify.
 
 	//calculate the position of 3 points in the world coordinate.
-	DOBOT_POSITION p1_world, p2_world, p3_world;
-	p1_world.coordinate_id = p2_world.coordinate_id = p3_world.coordinate_id = 0;
-	p1_world.type = p2_world.type = p3_world.type = WORLD_COORDINATE;
+	DOBOT_POSITION p1_world(WORLD_COORDINATE_ID), p2_world(WORLD_COORDINATE_ID), p3_world(WORLD_COORDINATE_ID);
 
 	ConvertCoordinate(p1_base, p1_world);
 	ConvertCoordinate(p2_base, p2_world);
@@ -220,7 +230,7 @@ double CCoordinateOperator::CalculateLenght(const E3_VECTOR &point1, const E3_VE
 
 unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DOBOT_POSITION &target)
 {
-	if (origin.type == target.type)
+	if (origin.coordinate_id == target.coordinate_id)
 	{
 		target = origin;
 		return 0;
@@ -228,18 +238,17 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 
 	DOBOT_POSITION buffer;
 	buffer.position = origin.position;
-	buffer.type = WORLD_COORDINATE;
 
-	std::vector<TRANSITION_MATRIX>::iterator iter;
+	std::vector<COORDINATE>::iterator iter;
 
 	//Convert to world coordinate first.
-	if (origin.type != WORLD_COORDINATE)
+	if (origin.coordinate_id != WORLD_COORDINATE_ID)
 	{
 		for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter)
 			if (iter->coordinate_id == origin.coordinate_id)
 				break;
 		
-		if (iter == m_vector_TM.end() || iter->type != origin.type)
+		if (iter == m_vector_TM.end())
 			return 1;//Have to be modified.
 
 		//zoom
@@ -257,10 +266,9 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 	}
 
 	target.position = buffer.position;
-	target.type = WORLD_COORDINATE;
 
 	//Convert to target coordinate.
-	if (target.type != WORLD_COORDINATE)
+	if (target.coordinate_id != WORLD_COORDINATE_ID)
 	{
 		for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter)
 			if (iter->coordinate_id == target.coordinate_id)
@@ -268,8 +276,6 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 
 		if (iter == m_vector_TM.end())
 			return 1;//Have to be modified.
-
-		target.type = iter->type;
 
 		//translation
 		Translation(buffer.position, iter->t);
@@ -288,10 +294,9 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 	return 0;
 }
 
-unsigned CCoordinateOperator::ErgodicAllCoordinate(TRANSITION_MATRIX &coordinate, bool reStart)
+unsigned CCoordinateOperator::ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart/* = false*/)
 {
-	unsigned coordinateAmount(m_vector_TM.size());
-	if (coordinateAmount < 1)
+	if (m_vector_TM.size() < 1)
 		return 1;//have to be modify
 
 	if (reStart)
@@ -307,16 +312,22 @@ unsigned CCoordinateOperator::ErgodicAllCoordinate(TRANSITION_MATRIX &coordinate
 	return 0;
 }
 
-unsigned CCoordinateOperator::GetCoordianteIdAndType(const unsigned &index, unsigned &id, COORDINATE_TYPE &type)
+unsigned CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, unsigned &id, TCHAR* str, unsigned &strSize)
 {
-	std::vector<TRANSITION_MATRIX>::iterator iter;
+	std::vector<COORDINATE>::iterator iter;
 	unsigned i(0);
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++i)
 	{
 		if (i == index)
 		{
 			id = iter->coordinate_id;
-			type = iter->type;
+			strSize = iter->note.sizeOfStr;
+			unsigned i(0);
+			for (; i < strSize; ++i)
+			{
+				*(str + i) = *(iter->note.str + i);
+			}
+			*(str + i) = '\0';
 			return 0;
 		}
 	}
@@ -326,7 +337,7 @@ unsigned CCoordinateOperator::GetCoordianteIdAndType(const unsigned &index, unsi
 
 unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &id)
 {
-	std::vector<TRANSITION_MATRIX>::iterator iter;
+	std::vector<COORDINATE>::iterator iter;
 	unsigned i(0);
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++i)
 	{
