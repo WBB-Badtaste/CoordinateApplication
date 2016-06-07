@@ -46,7 +46,7 @@ unsigned CCoordinateOperator::SetCoordinate
 		{
 			if (iter->coordinate_id == id)
 			{
-				iter->Rest(t, r, zoom, note);
+				iter->Reset(t, r, zoom, note);
 				return 0;
 			}
 		}
@@ -55,8 +55,8 @@ unsigned CCoordinateOperator::SetCoordinate
 	id = GetNewIdOfTransitionMartix();
 
 	//Create a new martix base on the auto id.
-    COORDINATE transition_martix(t, r, id, zoom, note);
-	m_vector_TM.push_back(transition_martix);
+    COORDINATE coordinate(t, r, id, zoom, note);
+	m_vector_TM.push_back(coordinate);
 
 	return 0;
 }
@@ -71,6 +71,10 @@ unsigned CCoordinateOperator::SetCoordinate
 {
 	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
 		return 1;//Have to be modify.
+
+	double a(CalculateRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position));
+	if (CalculateRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position) != M_PI_2)
+		return 1;//Have to be modify
 
 	//calculate the position of 3 points in the world coordinate.
 	DOBOT_POSITION p1_buffer(WORLD_COORDINATE_ID);
@@ -226,6 +230,17 @@ double CCoordinateOperator::CalculateVectorModule(const E3_VECTOR &vector)
 double CCoordinateOperator::CalculateLenght(const E3_VECTOR &point1, const E3_VECTOR &point2)
 {
 	return sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y) + (point1.z - point2.z) * (point1.z - point2.z));
+}
+
+double CCoordinateOperator::Dot(const E3_VECTOR &point1, const E3_VECTOR &point2)
+{
+
+	return point1.x * point2.x + point1.y * point2.y + point1.z * point2.z;
+}
+
+double CCoordinateOperator::CalculateRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2)
+{
+	return acos(Dot(vector1, vector2) / (CalculateVectorModule(vector1) * CalculateVectorModule(vector2)));
 }
 
 unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DOBOT_POSITION &target)

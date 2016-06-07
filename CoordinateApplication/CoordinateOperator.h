@@ -47,16 +47,34 @@ public:
 	@param[in]: vector
 	@return: module
 	*/
-	double CalculateVectorModule(const E3_VECTOR &vector);
+	inline double CalculateVectorModule(const E3_VECTOR &vector);
 
 	/*
-	@brief: This is a func to calculate the lenght two e3_point
+	@brief: This is a func to calculate the lenght between two e3_point
 	@author: JoMar
 	@param[in]: point1
 	@param[in]: point2
 	@return: lenght
 	*/
 	inline double CalculateLenght(const E3_VECTOR &point1, const E3_VECTOR &point2);
+
+	/*
+	@brief: This is a func to calculate the dot product of two vector
+	@author: JoMar
+	@param[in]: point1
+	@param[in]: point2
+	@return: dot product
+	*/
+	inline double Dot(const E3_VECTOR &point1, const E3_VECTOR &point2);
+
+	/*
+	@brief: This is a func to calculate the angle of two vector
+	@author: JoMar
+	@param[in]: vector1
+	@param[in]: vector2
+	@return: radian
+	*/
+	inline double CalculateRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2);
 
 	/*
 	@brief: This is a func convert two coordinate.

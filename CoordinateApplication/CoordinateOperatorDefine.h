@@ -175,7 +175,7 @@ typedef struct _coordinate
 		, const NOTE &newNote) : t(newT), r(newR), coordinate_id(newId), zoom(newZoom), note(newNote)
 	{};
 
-	void Rest(E3_VECTOR newT, E3_VECTOR newR, double newZoom, const NOTE& newNote)
+	void Reset(E3_VECTOR newT, E3_VECTOR newR, double newZoom, const NOTE& newNote)
 	{
 		t = newT;
 		r = newR;

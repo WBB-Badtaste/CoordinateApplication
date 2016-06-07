@@ -78,11 +78,7 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_POINT3_BASE_Y, coordinate_point3_y);
 	DDX_Text(pDX, IDC_EDIT_POINT3_BASE_Z, coordinate_point3_z);
 	DDX_Control(pDX, IDC_COMBO_BASE_COORD, m_comboBox_base_coordinate);
-	//  DDX_Control(pDX, IDC_COMBO_CHANGE_COORD, m);
 	DDX_Control(pDX, IDC_COMBO_CHANGE_COORD, m_comboBox_change_coordinate);
-	//	DDX_Check(pDX, IDC_CHECK_PALLET_USE_BASE, m_pallet_use_base_coordinate);
-	//	DDX_Control(pDX, IDC_LIST2, m_listBox_coordinate);
-	//	DDX_Control(pDX, IDC_COMBO_COORDINATE_TYPE, m_combo_coordinate_type);
 	DDX_Control(pDX, IDC_COMBO_PALLET_IN_COORD, m_combo_pallet_in_coordinate);
 	DDX_Control(pDX, IDC_COMBO_PALLET_BASE_COORD, m_combo_pallet_base_coordinate);
 	DDX_Control(pDX, IDC_COMBO_SEL_PALLET, m_combo_show_pallet);
@@ -90,7 +86,6 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_POINT1_PALLET_X, m_point1_pallet_x);
 	DDX_Text(pDX, IDC_EDIT_POINT1_PALLET_Y, m_point1_pallet_y);
 	DDX_Text(pDX, IDC_EDIT_POINT1_PALLET_Z, m_point1_pallet_z);
-	//  DDX_Control(pDX, IDC_EDIT_POINT2_PALLET_X, m_point2_pallet_x);
 	DDX_Text(pDX, IDC_EDIT_POINT2_PALLET_X, m_point2_pallet_x);
 	DDX_Text(pDX, IDC_EDIT_POINT2_PALLET_Y, m_point2_pallet_y);
 	DDX_Text(pDX, IDC_EDIT_POINT2_PALLET_Z, m_point2_pallet_z);
@@ -99,8 +94,6 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_POINT3_PALLET_Z, m_point3_pallet_z);
 	DDX_Text(pDX, IDC_EDIT_X_NUM, m_x_amount_pallet);
 	DDX_Text(pDX, IDC_EDIT_Y_NUM, m_y_amount_pallet);
-	//	DDX_Text(pDX, IDC_EDIT_PALLET_ID, m_id_pallet);
-	//  DDX_Control(pDX, IDC_EDIT_PALLET_X_LENGHT, m_x_lenght_pallet);
 	DDX_Text(pDX, IDC_EDIT_PALLET_X_LENGHT, m_x_lenght_pallet);
 	DDX_Text(pDX, IDC_EDIT_PALLET_Y_LENGHT, m_y_lenght_pallet);
 	DDX_Control(pDX, IDC_LIST2, m_listCtrl_pallets);
@@ -109,6 +102,7 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Radio(pDX, IDC_RADIO_SET_PALLET_AUTO, m_radio_set_pallet_mode);
 	DDX_Control(pDX, IDC_COMBO_COPY_PALLET, m_comboBox_copy_pallet);
 	DDX_Control(pDX, IDC_COMBO_CHANGE_PALLET, m_comboBox_change_pallet);
+	DDX_Control(pDX, IDC_COMBO_PALLET_COPY_COORD, m_combox_pallet_copy_coordinate);
 }
 
 BEGIN_MESSAGE_MAP(CCoordinateApplicationDlg, CDialogEx)
@@ -125,6 +119,7 @@ BEGIN_MESSAGE_MAP(CCoordinateApplicationDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_SET_PALLET_AUTO, &CCoordinateApplicationDlg::OnBnClickedRadioSetPalletAuto)
 	ON_BN_CLICKED(IDC_RADIO_SET_PALLET_MANUAL, &CCoordinateApplicationDlg::OnBnClickedRadioSetPalletManual)
 	ON_BN_CLICKED(IDC_RADIO_SET_PALLET_COPY, &CCoordinateApplicationDlg::OnBnClickedRadioSetPalletCopy)
+	ON_BN_CLICKED(IDC_BUTTON_CHANGE_PALLET, &CCoordinateApplicationDlg::OnBnClickedButtonChangePallet)
 END_MESSAGE_MAP()
 
 
@@ -277,6 +272,8 @@ void CCoordinateApplicationDlg::SetPalletAutoEnable(const BOOL &singal)
 
 void CCoordinateApplicationDlg::SetPalletCopyEnable(const BOOL &singal)
 {
+
+	GetDlgItem(IDC_COMBO_PALLET_COPY_COORD)->EnableWindow(singal);
 	GetDlgItem(IDC_COMBO_COPY_PALLET)->EnableWindow(singal);
 }
 
@@ -371,6 +368,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 	m_combo_pallet_in_coordinate.ResetContent();
 	m_combo_pallet_base_coordinate.ResetContent();
 	m_comboBox_pallet_show_coordinate.ResetContent();
+	m_combox_pallet_copy_coordinate.ResetContent();
 
 	m_listCtrl_coordinate.DeleteAllItems();
 
@@ -385,6 +383,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 		m_combo_pallet_in_coordinate.AddString(str);
 		m_combo_pallet_base_coordinate.AddString(str);
 		m_comboBox_pallet_show_coordinate.AddString(str);
+		m_combox_pallet_copy_coordinate.AddString(str);
 		AddCoordinate2List(coordinate);
 
 		while (!m_pCoordinateOperator->ErgodicAllCoordinate(coordinate))
@@ -395,6 +394,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 			m_combo_pallet_in_coordinate.AddString(str);
 			m_combo_pallet_base_coordinate.AddString(str);
 			m_comboBox_pallet_show_coordinate.AddString(str);
+			m_combox_pallet_copy_coordinate.AddString(str);
 			AddCoordinate2List(coordinate);
 		}
 	}
@@ -404,6 +404,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 	m_combo_pallet_in_coordinate.SetCurSel(0);
 	m_combo_pallet_base_coordinate.SetCurSel(0);
 	m_comboBox_pallet_show_coordinate.SetCurSel(0);
+	m_combox_pallet_copy_coordinate.SetCurSel(0);
 }
 
 void CCoordinateApplicationDlg::UpadtePallet()
@@ -515,9 +516,10 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 	// TODO: Add your control notification handler code here
 	UpdateData(TRUE);
 
-	unsigned idOfPallet(0);
+	unsigned idOfPallet(9999);
 	unsigned baseCoordinateIdOfPoint(0);
 	unsigned baseCoordinateIdOfPallet(0);
+	unsigned originPalletId(0);
 	unsigned baseCoordinateIndex(m_combo_pallet_base_coordinate.GetCurSel());
 
 	switch (m_radio_set_pallet_mode)
@@ -540,7 +542,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 			p3.position.y = m_point3_pallet_y;
 			p3.position.z = m_point3_pallet_z;
 
-			m_pPallerOperator->CreatePallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet);
+			m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet);
 
 			UpdateCoordinate();
 		}
@@ -549,10 +551,18 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 		if (m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
 			return;
 
-		m_pPallerOperator->CreatePallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet);
+		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet);
 		
 		break;
 	case 2:
+		if (m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+			return;
+
+		if (m_pPallerOperator->GetPalletId(m_comboBox_copy_pallet.GetCurSel(), originPalletId))
+			return;
+
+		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, originPalletId);
+
 		break;
 	default:
 		break;
@@ -644,4 +654,71 @@ void CCoordinateApplicationDlg::OnBnClickedRadioSetPalletCopy()
 	SetPalletAutoEnable(FALSE);
 	SetPalletManualEnable(FALSE);
 	SetPalletCopyEnable(TRUE);
+}
+
+
+void CCoordinateApplicationDlg::OnBnClickedButtonChangePallet()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	unsigned idOfPallet(0);
+
+	if (m_pPallerOperator->GetPalletId(m_comboBox_change_pallet.GetCurSel(), idOfPallet))
+		return;//Have to be modify
+
+	unsigned baseCoordinateIdOfPoint(0);
+	unsigned baseCoordinateIdOfPallet(0);
+	unsigned originPalletId(0);
+	unsigned baseCoordinateIndex(m_combo_pallet_base_coordinate.GetCurSel());
+
+	switch (m_radio_set_pallet_mode)
+	{
+	case 0:
+		if (!m_pCoordinateOperator->GetCoordianteId(baseCoordinateIndex, baseCoordinateIdOfPoint))
+		{
+			DOBOT_POSITION
+				p1(baseCoordinateIdOfPoint),
+				p2(baseCoordinateIdOfPoint),
+				p3(baseCoordinateIdOfPoint);
+
+			p1.position.x = m_point1_pallet_x;
+			p1.position.y = m_point1_pallet_y;
+			p1.position.z = m_point1_pallet_z;
+			p2.position.x = m_point2_pallet_x;
+			p2.position.y = m_point2_pallet_y;
+			p2.position.z = m_point2_pallet_z;
+			p3.position.x = m_point3_pallet_x;
+			p3.position.y = m_point3_pallet_y;
+			p3.position.z = m_point3_pallet_z;
+
+			m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet);
+
+			UpdateCoordinate();
+		}
+		break;
+	case 1:
+		if (m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+			return;
+
+		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet);
+
+		break;
+	case 2:
+		if (m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+			return;
+
+		if (m_pPallerOperator->GetPalletId(m_comboBox_copy_pallet.GetCurSel(), originPalletId))
+			return;
+
+		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, originPalletId);
+
+		break;
+	default:
+		break;
+	}
+
+	UpadtePallet();
+
+	UpdateData(FALSE);
 }

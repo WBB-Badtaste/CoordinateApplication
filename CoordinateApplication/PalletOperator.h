@@ -10,10 +10,9 @@ public:
 	virtual ~CPalletOperator();
 
 	/*
-	@brief: This is a func to create a pallet.
+	@brief: This is a func to modify the pallet. If the coordinate isn't existence, it will create a new one.
 	@author: JoMar
-	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
-	@param[in]: palletId - the id of pallet
+	@param[in|out]: palletId - the id of pallet.Func will renturn a new Id, when the id isn't existence in vector
 	@param[in]: coordinateId - the id of coordinate witch the pallet base on.
 	@param[in]: xLenght - the lenght of x axis
 	@param[in]: yLenght - the lenght of y axis
@@ -21,13 +20,13 @@ public:
 	@param[in]: zoneNum2 - the zone number of p1 to p3
 	@return: if it is success, return 0; else, return a error code.
 	*/
-	unsigned CreatePallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2);
+	unsigned SetPallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2);
 
 	/*
-	@brief: This is a func to create a pallet and coordinate.
+	@brief: This is a func to modify the pallet by using 3 special point. If the coordinate isn't existence, it will create a new one.
 	@author: JoMar
 	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
-	@param[in]: palletId - the id of pallet
+	@param[in|out]: palletId - the id of pallet.Func will renturn a new Id, when the id isn't existence in vector
 	@param[in]: p1 - the position of point 1
 	@param[in]: p2 - the position of point 2
 	@param[in]: p3 - the position of point 3
@@ -35,7 +34,17 @@ public:
 	@param[in]: zoneNum2 - the zone number of p1 to p3
 	@return: if it is success, return 0; else, return a error code.
 	*/
-	unsigned CreatePallet(unsigned &palletId, const DOBOT_POSITION& p1, const DOBOT_POSITION &p2, const DOBOT_POSITION p3, const unsigned &zoneNum1, const unsigned &zoneNum2);
+	unsigned SetPallet(unsigned &palletId, const DOBOT_POSITION& p1, const DOBOT_POSITION &p2, const DOBOT_POSITION p3, const unsigned &zoneNum1, const unsigned &zoneNum2);
+
+	/*
+	@brief: This is a func to modify the pallet by copying another pallet. If the coordinate isn't existence, it will create a new one.
+	@author: JoMar
+	@param[in|out]: palletId - the id of pallet. Func will renturn a new Id, when the id isn't existence in vector
+	@param[in]: coordinteIdofPallet - the coordinate id of target pallet
+	@param[in]: originPalletId - the id of origin pallet
+	@return: if it is success, return 0; else, return a error code.
+	*/
+	unsigned SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId);
 
 	/*
 	@brief: This is a func to get the position of a cell on the pallet.
@@ -68,6 +77,17 @@ public:
 	@return: if it is success, return 0; else, return a error code.
 	*/
 	unsigned GetPalletByIndex(const unsigned &index, PALLET &pallet);
+
+
+	/*
+	@brief: This is a func to get the pallet id by using index of vector.
+	@author: JoMar
+	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
+	@param[in]: index - the index of pallet in vector
+	@param[out]: palletId - the id of pallet
+	@return: if it is success, return 0; else, return a error code.
+	*/
+	unsigned GetPalletId(const unsigned &index, unsigned& palletId);
 
 	/*
 	@brief: This is a func to ergodic all pallet in vector.

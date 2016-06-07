@@ -35,6 +35,28 @@ protected:
 public:
 	afx_msg void OnBnClickedRadioManual();
 	afx_msg void OnBnClickedRadioAuto();
+	afx_msg void OnBnClickedRadioSetPalletAuto();
+	afx_msg void OnBnClickedRadioSetPalletManual();
+	afx_msg void OnBnClickedRadioSetPalletCopy();
+	afx_msg void OnBnClickedButtonCreateCoord();
+	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedButtonChangeCoord();
+	afx_msg void OnCbnSelchangeComboSelPallet();
+	afx_msg void OnBnClickedButtonCreatePallet();
+	afx_msg void OnCbnSelchangeComboPalletShowCoordinate();
+	CComboBox m_comboBox_base_coordinate;
+	CComboBox m_comboBox_change_coordinate;
+	CComboBox m_combo_pallet_in_coordinate;
+	CComboBox m_combo_pallet_base_coordinate;
+	CComboBox m_combo_show_pallet;
+	CComboBox m_comboBox_pallet_show_coordinate;
+	CComboBox m_comboBox_copy_pallet;
+	CComboBox m_comboBox_change_pallet;
+	CListCtrl m_listCtrl_coordinate;
+	CListCtrl m_listCtrl_pallets;
+	CString m_coordinate_note;
+	UINT m_x_amount_pallet;
+	UINT m_y_amount_pallet;
 	int m_radio_setType;
 	double m_trans_x;
 	double m_trans_y;
@@ -52,31 +74,6 @@ public:
 	double coordinate_point3_x;
 	double coordinate_point3_y;
 	double coordinate_point3_z;
-	CComboBox m_comboBox_base_coordinate;
-	CComboBox m_comboBox_change_coordinate;
-
-private:
-	void SetCoordinateManualEnable(const BOOL &singal);
-	void SetCoordinateAutoEnable(const BOOL &singal);
-
-	void SetPalletManualEnable(const BOOL &singal);
-	void SetPalletAutoEnable(const BOOL &singal);
-	void SetPalletCopyEnable(const BOOL &singal);
-
-	void AddCoordinate2List(const COORDINATE&);
-	void AddPallets2List();
-	void UpdateCoordinate();
-	void UpadtePallet();
-	CCoordinateOperator *m_pCoordinateOperator;
-	CPalletOperator *m_pPallerOperator;
-public:
-	afx_msg void OnBnClickedButtonCreateCoord();
-	afx_msg void OnDestroy();
-	CComboBox m_combo_pallet_in_coordinate;
-	CComboBox m_combo_pallet_base_coordinate;
-	CComboBox m_combo_show_pallet;
-	afx_msg void OnBnClickedButtonChangeCoord();
-	CListCtrl m_listCtrl_coordinate;
 	double m_point1_pallet_x;
 	double m_point1_pallet_y;
 	double m_point1_pallet_z;
@@ -86,20 +83,22 @@ public:
 	double m_point3_pallet_x;
 	double m_point3_pallet_y;
 	double m_point3_pallet_z;
-	UINT m_x_amount_pallet;
-	UINT m_y_amount_pallet;
-	afx_msg void OnBnClickedButtonCreatePallet();
 	double m_x_lenght_pallet;
 	double m_y_lenght_pallet;
-	afx_msg void OnCbnSelchangeComboSelPallet();
-	CListCtrl m_listCtrl_pallets;
-	CComboBox m_comboBox_pallet_show_coordinate;
-	afx_msg void OnCbnSelchangeComboPalletShowCoordinate();
-	CString m_coordinate_note;
 	int m_radio_set_pallet_mode;
-	CComboBox m_comboBox_copy_pallet;
-	CComboBox m_comboBox_change_pallet;
-	afx_msg void OnBnClickedRadioSetPalletAuto();
-	afx_msg void OnBnClickedRadioSetPalletManual();
-	afx_msg void OnBnClickedRadioSetPalletCopy();
+private:
+	CCoordinateOperator *m_pCoordinateOperator;
+	CPalletOperator *m_pPallerOperator;
+	void SetCoordinateManualEnable(const BOOL &singal);
+	void SetCoordinateAutoEnable(const BOOL &singal);
+	void SetPalletManualEnable(const BOOL &singal);
+	void SetPalletAutoEnable(const BOOL &singal);
+	void SetPalletCopyEnable(const BOOL &singal);
+	void AddCoordinate2List(const COORDINATE&);
+	void AddPallets2List();
+	void UpdateCoordinate();
+	void UpadtePallet();
+public:
+	CComboBox m_combox_pallet_copy_coordinate;
+	afx_msg void OnBnClickedButtonChangePallet();
 };
