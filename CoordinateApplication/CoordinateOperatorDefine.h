@@ -9,13 +9,13 @@ const double M_PI(3.14159265358979323846);
 
 const double M_PI_2(M_PI / 2);
 
-//the enum of coordinate types
-typedef enum _coordinate_type
-{
-	WORLD_COORDINATE,		//The base coordinate of whole coordinate system.
-	KINEMATIC_COORDINATE,	//The coordinate of kinematic.
-	PALLET_COORDINATE,		//The coordinate of a plane.
-}COORDINATE_TYPE;
+// //the enum of coordinate types
+// typedef enum _coordinate_type
+// {
+// 	WORLD_COORDINATE,		//The base coordinate of whole coordinate system.
+// 	KINEMATIC_COORDINATE,	//The coordinate of kinematic.
+// 	PALLET_COORDINATE,		//The coordinate of a plane.
+// }COORDINATE_TYPE;
 
 //the struct of vector
 typedef struct _e3_vector
