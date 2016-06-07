@@ -52,6 +52,7 @@ CCoordinateApplicationDlg::CCoordinateApplicationDlg(CWnd* pParent /*=NULL*/)
 //	, m_id_pallet(0)
 	, m_x_lenght_pallet(0)
 	, m_y_lenght_pallet(0)
+	, m_coordinate_note(_T("机构坐标系"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
@@ -82,7 +83,7 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_CHANGE_COORD, m_comboBox_change_coordinate);
 	DDX_Check(pDX, IDC_CHECK_PALLET_USE_BASE, m_pallet_use_base_coordinate);
 	//	DDX_Control(pDX, IDC_LIST2, m_listBox_coordinate);
-	DDX_Control(pDX, IDC_COMBO_COORDINATE_TYPE, m_combo_coordinate_type);
+//	DDX_Control(pDX, IDC_COMBO_COORDINATE_TYPE, m_combo_coordinate_type);
 	DDX_Control(pDX, IDC_COMBO_PALLET_IN_COORD, m_combo_pallet_in_coordinate);
 	DDX_Control(pDX, IDC_COMBO_PALLET_BASE_COORD, m_combo_pallet_base_coordinate);
 	DDX_Control(pDX, IDC_COMBO_SEL_PALLET, m_combo_show_pallet);
@@ -105,6 +106,7 @@ void CCoordinateApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_PALLET_Y_LENGHT, m_y_lenght_pallet);
 	DDX_Control(pDX, IDC_LIST2, m_listCtrl_pallets);
 	DDX_Control(pDX, IDC_COMBO_PALLET_SHOW_COORDINATE, m_comboBox_pallet_show_coordinate);
+	DDX_Text(pDX, IDC_EDIT1, m_coordinate_note);
 }
 
 BEGIN_MESSAGE_MAP(CCoordinateApplicationDlg, CDialogEx)
@@ -138,15 +140,9 @@ BOOL CCoordinateApplicationDlg::OnInitDialog()
 	m_pCoordinateOperator = new CCoordinateOperator;
 	m_pPallerOperator = new CPalletOperator(m_pCoordinateOperator);
 
-	//setup the coordinate type comboBox
-	m_combo_coordinate_type.AddString(_T("世界坐标系"));
-	m_combo_coordinate_type.AddString(_T("机构坐标系"));
-	m_combo_coordinate_type.AddString(_T("托盘坐标系"));
-	m_combo_coordinate_type.SetCurSel(0);
-
 	//setup the coordinate list control
 	m_listCtrl_coordinate.InsertColumn(0, _T("ID"), LVCFMT_CENTER, 100, -1);
-	m_listCtrl_coordinate.InsertColumn(1, _T("坐标系类型"), LVCFMT_CENTER, 100, -1);
+	m_listCtrl_coordinate.InsertColumn(1, _T("坐标系备注"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_coordinate.InsertColumn(2, _T("平移矩阵X"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_coordinate.InsertColumn(3, _T("平移矩阵Y"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_coordinate.InsertColumn(4, _T("平移矩阵Z"), LVCFMT_CENTER, 100, -1);
@@ -159,7 +155,7 @@ BOOL CCoordinateApplicationDlg::OnInitDialog()
 	m_listCtrl_pallets.InsertColumn(0, _T("行号"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(1, _T("列号"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(2, _T("所在坐标系ID"), LVCFMT_CENTER, 100, -1);
-	m_listCtrl_pallets.InsertColumn(3, _T("所在坐标系类型"), LVCFMT_CENTER, 100, -1);
+	m_listCtrl_pallets.InsertColumn(3, _T("所在坐标系备注"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(4, _T("X坐标"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(5, _T("Y坐标"), LVCFMT_CENTER, 100, -1);
 	m_listCtrl_pallets.InsertColumn(6, _T("Z坐标"), LVCFMT_CENTER, 100, -1);
@@ -293,23 +289,11 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 	// TODO:  在此添加控件通知处理程序代码
 
 	unsigned coordinateId_target(0);
-	COORDINATE_TYPE type_target;
 
 	UpdateData(TRUE);
 
-	switch (m_combo_coordinate_type.GetCurSel())
-	{
-	default:
-	case 0:
-		type_target = WORLD_COORDINATE;
-		break;
-	case 1:
-		type_target = KINEMATIC_COORDINATE;
-		break;
-	case 2:
-		type_target = PALLET_COORDINATE;
-		break;
-	}
+	unsigned strSize(m_coordinate_note.GetLength() * sizeof(TCHAR));
+
 
 	if (!m_radio_setType)
 	{//manual
@@ -325,17 +309,14 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 
 		double zoom = m_ratio;
 
-		m_pCoordinateOperator->SetCoordinate(coordinateId_target, type_target, t, r, zoom);
+		m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
 	}
 	else
 	{//auto
-
 		unsigned coordinateId_base(0);
-		COORDINATE_TYPE type_base;
-		unsigned index(m_comboBox_base_coordinate.GetCurSel());
-		if (!m_pCoordinateOperator->GetCoordianteIdAndType(index, coordinateId_base, type_base))
+		if (!m_pCoordinateOperator->GetCoordianteId(m_comboBox_base_coordinate.GetCurSel(), coordinateId_base))
 		{
-			DOBOT_POSITION p1(coordinateId_base, type_base), p2(coordinateId_base, type_base), p3(coordinateId_base, type_base);
+			DOBOT_POSITION p1(coordinateId_base), p2(coordinateId_base), p3(coordinateId_base);
 			p1.position.x = coordinate_point1_x;
 			p1.position.y = coordinate_point1_y;
 			p1.position.z = coordinate_point1_z;
@@ -346,7 +327,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 			p3.position.y = coordinate_point3_y;
 			p3.position.z = coordinate_point3_z;
 
-			m_pCoordinateOperator->SetCoordinate(coordinateId_target, type_target, p1, p2, p3);
+			m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
 		}
 		else
 		{
@@ -361,39 +342,27 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 	UpdateData(FALSE);
 }
 
-void CCoordinateApplicationDlg::AddCoordinate2List(const TRANSITION_MATRIX &tm)
+void CCoordinateApplicationDlg::AddCoordinate2List(const TRANSITION_MATRIX &coordinate)
 {
 	CString str("");
-	str.Format(_T("%03u"), tm.coordinate_id);
-	m_listCtrl_coordinate.InsertItem(tm.coordinate_id, str);
-	switch (tm.type)
-	{
-	default:
-	case WORLD_COORDINATE:
-		str = _T("世界坐标系");
-		break;
-	case KINEMATIC_COORDINATE:
-		str = _T("机构坐标系");
-		break;
-	case PALLET_COORDINATE:
-		str = _T("托盘坐标系");
-		break;
-	}
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 1, str);
-	str.Format(_T("%f"), tm.t.x);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 2, str);
-	str.Format(_T("%f"), tm.t.y);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 3, str);
-	str.Format(_T("%f"), tm.t.z);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 4, str);
-	str.Format(_T("%f"), tm.r.x);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 5, str);
-	str.Format(_T("%f"), tm.r.y);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 6, str);
-	str.Format(_T("%f"), tm.r.z);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 7, str);
-	str.Format(_T("%f"), tm.zoom);
-	m_listCtrl_coordinate.SetItemText(tm.coordinate_id, 8, str);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+	str.Format(_T("%03u"), coordinate.coordinate_id);
+	m_listCtrl_coordinate.InsertItem(coordinate.coordinate_id, str);
+	str.Format(_T("%s"), coordinate.note.str);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 1, str);
+	str.Format(_T("%f"), coordinate.t.x);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 2, str);
+	str.Format(_T("%f"), coordinate.t.y);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 3, str);
+	str.Format(_T("%f"), coordinate.t.z);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 4, str);
+	str.Format(_T("%f"), coordinate.r.x);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 5, str);
+	str.Format(_T("%f"), coordinate.r.y);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 6, str);
+	str.Format(_T("%f"), coordinate.r.z);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 7, str);
+	str.Format(_T("%f"), coordinate.zoom);
+	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 8, str);
 }
 
 void CCoordinateApplicationDlg::UpdateCoordinate()
@@ -411,7 +380,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 
 	if (!m_pCoordinateOperator->ErgodicAllCoordinate(coordinate, true))
 	{
-		str.Format(_T("%03u"),coordinate.coordinate_id);
+		str.Format(_T("%03u"), coordinate.coordinate_id);
 		m_comboBox_base_coordinate.AddString(str);
 		m_comboBox_change_coordinate.AddString(str);
 		m_combo_pallet_in_coordinate.AddString(str);
@@ -482,21 +451,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 	unsigned coordinateId_target(0);
 	m_pCoordinateOperator->GetCoordianteId(m_comboBox_change_coordinate.GetCurSel(), coordinateId_target);
 
-	COORDINATE_TYPE type_target;
-	
-	switch (m_combo_coordinate_type.GetCurSel())
-	{
-	default:
-	case 0:
-		type_target = WORLD_COORDINATE;
-		break;
-	case 1:
-		type_target = KINEMATIC_COORDINATE;
-		break;
-	case 2:
-		type_target = PALLET_COORDINATE;
-		break;
-	}
+	unsigned strSize(m_coordinate_note.GetLength() * sizeof(TCHAR));
 
 	if (!m_radio_setType)
 	{//manual
@@ -512,17 +467,16 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 
 		double zoom = m_ratio;
 
-		m_pCoordinateOperator->SetCoordinate(coordinateId_target, type_target, t, r, zoom);
+		m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
 	}
 	else
 	{//auto
 
 		unsigned coordinateId_base(0);
-		COORDINATE_TYPE type_base;
 		unsigned index(m_comboBox_base_coordinate.GetCurSel());
-		if (!m_pCoordinateOperator->GetCoordianteIdAndType(index, coordinateId_base, type_base))
+		if (!m_pCoordinateOperator->GetCoordianteId(index, coordinateId_base))
 		{
-			DOBOT_POSITION p1(coordinateId_base, type_base), p2(coordinateId_base, type_base), p3(coordinateId_base, type_base);
+			DOBOT_POSITION p1(coordinateId_base), p2(coordinateId_base), p3(coordinateId_base);
 			p1.position.x = coordinate_point1_x;
 			p1.position.y = coordinate_point1_y;
 			p1.position.z = coordinate_point1_z;
@@ -533,7 +487,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 			p3.position.y = coordinate_point3_y;
 			p3.position.z = coordinate_point3_z;
 
-			m_pCoordinateOperator->SetCoordinate(coordinateId_target, type_target, p1, p2, p3);
+			m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
 		}
 		else
 		{
@@ -559,14 +513,13 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 	if (m_pallet_use_base_coordinate)
 	{
 		unsigned baseCoordinateIdOfPoint(0);
-		COORDINATE_TYPE coordinateTypeOfpoint;
 		unsigned index(m_combo_pallet_base_coordinate.GetCurSel());
-		if (!m_pCoordinateOperator->GetCoordianteIdAndType(index, baseCoordinateIdOfPoint, coordinateTypeOfpoint))
+		if (!m_pCoordinateOperator->GetCoordianteId(index, baseCoordinateIdOfPoint))
 		{
 			DOBOT_POSITION
-				p1(baseCoordinateIdOfPoint, coordinateTypeOfpoint), 
-				p2(baseCoordinateIdOfPoint, coordinateTypeOfpoint), 
-				p3(baseCoordinateIdOfPoint, coordinateTypeOfpoint);
+				p1(baseCoordinateIdOfPoint), 
+				p2(baseCoordinateIdOfPoint), 
+				p3(baseCoordinateIdOfPoint);
 
 			p1.position.x = m_point1_pallet_x;
 			p1.position.y = m_point1_pallet_y;
@@ -622,8 +575,10 @@ void CCoordinateApplicationDlg::AddPallets2List()
 	for (unsigned i = 0; i < pallet.zoneNumX; ++i)
 	for (unsigned j = 0; j < pallet.zoneNumY; ++j)
 	{
+		TCHAR note[20];
+		unsigned strSize(0);
 		DOBOT_POSITION position;
-		m_pCoordinateOperator->GetCoordianteIdAndType(m_comboBox_pallet_show_coordinate.GetCurSel(), position.coordinate_id, position.type);
+		m_pCoordinateOperator->GetCoordianteIdAndNote(m_comboBox_pallet_show_coordinate.GetCurSel(), position.coordinate_id, note, strSize);
 
 		m_pCoordinateOperator->ConvertCoordinate(pallet.user_points[i][j], position);
 
@@ -633,19 +588,7 @@ void CCoordinateApplicationDlg::AddPallets2List()
 		m_listCtrl_pallets.SetItemText(i + j, 1, str);
 		str.Format(_T("%03u"), position.coordinate_id);
 		m_listCtrl_pallets.SetItemText(i + j, 2, str);
-		switch (position.type)
-		{
-		case  WORLD_COORDINATE:
-		default:
-			str = _T("世界坐标系");
-			break;
-		case KINEMATIC_COORDINATE:
-			str = _T("机构坐标系");
-			break;
-		case PALLET_COORDINATE:
-			str = _T("托盘坐标系");
-			break;
-		}
+		str.Format(_T("%s"), note);
 		m_listCtrl_pallets.SetItemText(i + j, 3, str);
 		str.Format(_T("%f"), position.position.x);
 		m_listCtrl_pallets.SetItemText(i + j, 4, str);

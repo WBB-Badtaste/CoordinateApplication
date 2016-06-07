@@ -68,9 +68,8 @@ private:
 public:
 	afx_msg void OnBnClickedCheckPalletUseBase();
 	BOOL m_pallet_use_base_coordinate;
-	//CListBox m_listBox_coordinate;
 	afx_msg void OnBnClickedButtonCreateCoord();
-	CComboBox m_combo_coordinate_type;
+//	CComboBox m_combo_coordinate_type;
 	afx_msg void OnDestroy();
 	CComboBox m_combo_pallet_in_coordinate;
 	CComboBox m_combo_pallet_base_coordinate;
@@ -98,4 +97,5 @@ public:
 	CListCtrl m_listCtrl_pallets;
 	CComboBox m_comboBox_pallet_show_coordinate;
 	afx_msg void OnCbnSelchangeComboPalletShowCoordinate();
+	CString m_coordinate_note;
 };

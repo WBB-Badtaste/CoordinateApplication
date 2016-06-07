@@ -72,26 +72,28 @@ public:
 	@note: Transition martix is base on the world coordinate. The convert sequence: translation->roll->ptich->yaw->zoom
 	@author: JoMar
 	@param[in|out]: id - coordinate id. Func will renturn a new Id, when the id isn't existence in vector;
-	@param[in]: type - the type of the coordinate.
 	@param[in]: t - translation martix.
 	@param[in]: r - rotation martix.
-	@param[in]: zoom 
+	@param[in]: zoom
+	@param[in]: str - string of note
+	@param[in]: strSize - the size of string
 	@return: if it is success, return 0; else, return a error code.
 	*/
-	unsigned SetCoordinate(unsigned &id, const COORDINATE_TYPE &type, const E3_VECTOR &t, const E3_VECTOR &r, const double &zoom);
+	unsigned SetCoordinate(unsigned &id, const E3_VECTOR &t, const E3_VECTOR &r, const double &zoom, const TCHAR* const str, const unsigned &strSize);
 
 	/*
 	@brief: This is a func to modify the coordinate by using 3 special point. If the coordinate isn't existence, it will create a new one.
 	@note: Transition martix is base on the world coordinate. The convert sequence: translation->roll->ptich->yaw->zoom
 	@author: JoMar
 	@param[in|out]: id - coordinate id. Func will renturn a new Id, when the id isn't existence in vector;
-	@param[in]: type - the type of the coordinate.
 	@param[in]: p1_b - the point1 in base coordinate
 	@param[in]: p2_b - the point2 in base coordinate
 	@param[in]: p3_b - the point3 in base coordinate
+	@param[in]: str - string of note
+	@param[in]: strSize - the size of string
 	@return: if it is success, return 0; else, return a error code.
 	*/
-	unsigned SetCoordinate(unsigned &id, const COORDINATE_TYPE &type, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base);
+	unsigned SetCoordinate(unsigned &id, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, const TCHAR* const str, const unsigned &strSize);
 
 	/*
 	@brief: This is a func to modify the coordinate by using 3 special point. If the coordinate isn't existence, it will create a new one.
@@ -108,7 +110,7 @@ public:
 	unsigned SetCoordinate(const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, DOBOT_POSITION &p1_target, DOBOT_POSITION &p2_target, DOBOT_POSITION &p3_target);
 
 	/*
-		@brief: This is a func to ergodic all coordinate in vector.
+		@brief: This is a func to ergodic all coordinate in vector. 
 		@author: JoMar
 		@param[out]: coordinate
 		@param[in]: reStart
@@ -124,7 +126,7 @@ public:
 	@param[out]: type - type of the coordinate
 	@return: if it is success, return 0; else, return a error code.
 	*/
-	unsigned GetCoordianteIdAndType(const unsigned &index, unsigned &id, COORDINATE_TYPE &type);
+	unsigned GetCoordianteIdAndNote(const unsigned &index, unsigned &id, TCHAR* str, unsigned &strSize);
 
 	/*
 	@brief: This is a func to get the id of the coordinate.

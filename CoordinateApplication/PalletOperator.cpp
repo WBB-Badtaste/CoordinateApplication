@@ -15,6 +15,12 @@ CPalletOperator::~CPalletOperator()
 
 unsigned CPalletOperator::CreatePallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2)
 {
+	if (xLenght <= 0 || yLenght <= 0)
+		return 1;//Have to be modify
+
+	if (zoneNum1 < 1 || zoneNum2 < 1)
+		return 1;//Have to be modify
+	
 	palletId = GetNewIdOfPallet();
 
 	PALLET pallet(palletId, coordinateId, xLenght, yLenght, zoneNum1, zoneNum2);
@@ -30,7 +36,8 @@ unsigned CPalletOperator::CreatePallet(unsigned &palletId, const DOBOT_POSITION&
 	double yLenght(m_pCoordinateOperator->CalculateVectorModule(p3.position - p1.position));
 	unsigned coordinateId(0);
 
-	m_pCoordinateOperator->SetCoordinate(coordinateId, PALLET_COORDINATE, p1, p2, p3);
+	TCHAR *str(_T("ÍÐÅÌ×ø±êÏµ"));
+	m_pCoordinateOperator->SetCoordinate(coordinateId, p1, p2, p3, str, _tcslen(str));
 
 	CreatePallet(palletId, coordinateId, xLenght, yLenght, zoneNum1, zoneNum2);
 
