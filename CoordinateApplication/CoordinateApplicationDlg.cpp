@@ -342,7 +342,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 	UpdateData(FALSE);
 }
 
-void CCoordinateApplicationDlg::AddCoordinate2List(const TRANSITION_MATRIX &coordinate)
+void CCoordinateApplicationDlg::AddCoordinate2List(const COORDINATE &coordinate)
 {
 	CString str("");
 	str.Format(_T("%03u"), coordinate.coordinate_id);
@@ -375,7 +375,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 
 	m_listCtrl_coordinate.DeleteAllItems();
 
-	TRANSITION_MATRIX coordinate;
+	COORDINATE coordinate;
 	CString str;
 
 	if (!m_pCoordinateOperator->ErgodicAllCoordinate(coordinate, true))

@@ -41,7 +41,7 @@ unsigned CCoordinateOperator::SetCoordinate
 	if (id)
 	{
 		//if user input the id, check the martix is in the vector or not.
-		std::vector<TRANSITION_MATRIX>::iterator iter;
+		std::vector<COORDINATE>::iterator iter;
 		for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter)
 		{
 			if (iter->coordinate_id == id)
@@ -55,7 +55,7 @@ unsigned CCoordinateOperator::SetCoordinate
 	id = GetNewIdOfTransitionMartix();
 
 	//Create a new martix base on the auto id.
-    TRANSITION_MATRIX transition_martix(t, r, id, zoom, note);
+    COORDINATE transition_martix(t, r, id, zoom, note);
 	m_vector_TM.push_back(transition_martix);
 
 	return 0;
@@ -239,7 +239,7 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 	DOBOT_POSITION buffer;
 	buffer.position = origin.position;
 
-	std::vector<TRANSITION_MATRIX>::iterator iter;
+	std::vector<COORDINATE>::iterator iter;
 
 	//Convert to world coordinate first.
 	if (origin.coordinate_id != WORLD_COORDINATE_ID)
@@ -294,7 +294,7 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 	return 0;
 }
 
-unsigned CCoordinateOperator::ErgodicAllCoordinate(TRANSITION_MATRIX &coordinate, bool reStart/* = false*/)
+unsigned CCoordinateOperator::ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart/* = false*/)
 {
 	if (m_vector_TM.size() < 1)
 		return 1;//have to be modify
@@ -314,7 +314,7 @@ unsigned CCoordinateOperator::ErgodicAllCoordinate(TRANSITION_MATRIX &coordinate
 
 unsigned CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, unsigned &id, TCHAR* str, unsigned &strSize)
 {
-	std::vector<TRANSITION_MATRIX>::iterator iter;
+	std::vector<COORDINATE>::iterator iter;
 	unsigned i(0);
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++i)
 	{
@@ -337,7 +337,7 @@ unsigned CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, unsi
 
 unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &id)
 {
-	std::vector<TRANSITION_MATRIX>::iterator iter;
+	std::vector<COORDINATE>::iterator iter;
 	unsigned i(0);
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++i)
 	{

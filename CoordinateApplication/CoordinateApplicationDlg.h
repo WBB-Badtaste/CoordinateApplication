@@ -59,7 +59,7 @@ private:
 	void SetManualEnable(const BOOL &singal);
 	void SetAutoEnable(const BOOL &singal);
 	void SetUseBaseEnable(const BOOL &singal);
-	void AddCoordinate2List(const TRANSITION_MATRIX &);
+	void AddCoordinate2List(const COORDINATE&);
 	void AddPallets2List();
 	void UpdateCoordinate();
 	void UpadtePallet();

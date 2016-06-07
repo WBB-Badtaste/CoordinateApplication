@@ -136,8 +136,8 @@ typedef struct _note
 
 }NOTE;
 
-//the strust of transition matrix
-typedef struct _transition_matrix
+//the strust of coodinate
+typedef struct _coordinate
 {
 	
 
@@ -147,16 +147,16 @@ typedef struct _transition_matrix
 	double zoom;
 	NOTE note;
 
-	_transition_matrix() :coordinate_id(0), zoom(1.0){};
+	_coordinate() :coordinate_id(0), zoom(1.0){};
 
-	_transition_matrix(const _transition_matrix & newObject)
+	_coordinate(const _coordinate & newObject)
 		: coordinate_id(newObject.coordinate_id)
 		, t(newObject.t)
 		, r(newObject.r)
 		, zoom(newObject.zoom)
 		, note(newObject.note){};
 
-	_transition_matrix& operator=(const _transition_matrix & newObject)
+	_coordinate& operator=(const _coordinate & newObject)
 	{
 		coordinate_id = newObject.coordinate_id;
 		t = newObject.t;
@@ -167,7 +167,7 @@ typedef struct _transition_matrix
 	};
 
 
-	_transition_matrix
+	_coordinate
 		(const E3_VECTOR &newT
 		, const E3_VECTOR &newR
 		, const unsigned &newId
@@ -184,4 +184,4 @@ typedef struct _transition_matrix
 	};
 
 	
-}TRANSITION_MATRIX;
+}COORDINATE;

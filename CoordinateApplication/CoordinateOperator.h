@@ -116,7 +116,7 @@ public:
 		@param[in]: reStart
 		@return: if it is success, return 0; else, return a error code.
 	*/
-	unsigned ErgodicAllCoordinate(TRANSITION_MATRIX &coordinate, bool reStart = false);
+	unsigned ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart = false);
 
 	/*
 	@brief: This is a func to get the id and type of the coordinate.
@@ -138,9 +138,9 @@ public:
 	unsigned GetCoordianteId(const unsigned &index, unsigned &id);
 
 private:
-	std::vector<TRANSITION_MATRIX> m_vector_TM;	//the vector of transition martixs.
+	std::vector<COORDINATE> m_vector_TM;	//the vector of transition martixs.
 
-	std::vector<TRANSITION_MATRIX>::iterator m_iter;//point to vector to Ergodic
+	std::vector<COORDINATE>::iterator m_iter;//point to vector to Ergodic
 
 	/*
 	@brief: This is a func to get a new ID base on the vector.
