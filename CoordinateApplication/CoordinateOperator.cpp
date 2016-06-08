@@ -72,8 +72,7 @@ unsigned CCoordinateOperator::SetCoordinate
 	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
 		return 1;//Have to be modify.
 
-	double a(CalculateRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position));
-	if (CalculateRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position) != M_PI_2)
+	if (CalRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position) != M_PI_2)
 		return 1;//Have to be modify
 
 	//calculate the position of 3 points in the world coordinate.
@@ -87,15 +86,15 @@ unsigned CCoordinateOperator::SetCoordinate
 	//calculate the position of 3 points in the target coordinate.
 	//It have be defined that point1 is the origin, point2 on x axis and point3 on y axis. 
 	E3_VECTOR position1_target(0, 0, 0);
-	E3_VECTOR position2_target(CalculateLenght(p2_buffer.position, p1_buffer.position), 0, 0);
-	E3_VECTOR position3_target(0, CalculateLenght(p3_buffer.position, p1_buffer.position), 0);
+	E3_VECTOR position2_target((p2_buffer.position - p1_buffer.position).Module(), 0, 0);
+	E3_VECTOR position3_target(0, (p3_buffer.position - p1_buffer.position).Module(), 0);
 
 	E3_VECTOR t_target;
 	t_target = -p1_buffer.position;
 
-	Translation(p1_buffer.position, t_target);
-	Translation(p2_buffer.position, t_target);
-	Translation(p3_buffer.position, t_target);
+	p1_buffer.position.Translation(t_target);
+	p2_buffer.position.Translation(t_target);
+	p3_buffer.position.Translation(t_target);
 
  	//solve the normal Vector of plane with p2_buffer, p3_buffer and origin.
 	E3_VECTOR normalVector(p2_buffer.position * p3_buffer.position);
@@ -105,13 +104,13 @@ unsigned CCoordinateOperator::SetCoordinate
 	//rotate the normal Vector to parallel to z axis by an angle. And this angle is the x angle of the rotation martix.
 	//!!pay attention to let normalVector on xz-plane of world coordinate
 	r_target.x = M_PI_2 - atan2(normalVector.z, normalVector.y);
-	Roll(normalVector, r_target.x);
-	Roll(p2_buffer.position, r_target.x);
+	normalVector.Roll(r_target.x);
+	p2_buffer.position.Roll(r_target.x);
 
 	//rotate the normal Vector to parallel to z axis by an angle. And this angle is the y angle of the rotation martix.
 	//!!pay attention to let normalVector on Z axis of world coordinate
 	r_target.y = -atan2(normalVector.x, normalVector.z);
-	Pitch(p2_buffer.position, r_target.y);
+	p2_buffer.position.Pitch(r_target.y);
 
 	//rotate the normal Vector to parallel to z axis by an angle. And this angle is the z angle of the rotation martix.
 	//!!pay attention to let p2_buffer on x axis of target coordinate
@@ -156,13 +155,12 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 	//calculate the transfer martix of the target coordinate.
 
 	//calculate the zoom
-	double lenght1_world(CalculateLenght(p1_world.position, p2_world.position));
-	double lenght2_world(CalculateLenght(p1_world.position, p3_world.position));
-	double lenght3_world(CalculateLenght(p2_world.position, p3_world.position));
-
-	double lenght1_target(CalculateLenght(p1_target.position, p2_target.position));
-	double lenght2_target(CalculateLenght(p1_target.position, p3_target.position));
-	double lenght3_target(CalculateLenght(p2_target.position, p3_target.position));
+	double lenght1_world((p2_world.position - p1_world.position).Module());
+	double lenght2_world((p3_world.position - p1_world.position).Module());
+	double lenght3_world((p2_world.position - p3_world.position).Module());
+	double lenght1_target((p2_target.position - p1_target.position).Module());
+	double lenght2_target((p3_target.position - p1_target.position).Module());
+	double lenght3_target((p2_target.position - p3_target.position).Module());
 
 	double zoom_target((lenght1_target + lenght2_target + lenght3_target) / (lenght1_world + lenght2_world + lenght3_world));
 
@@ -190,57 +188,6 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 	//修改目标坐标系ID
 
 	return 0;
-}
-
-void CCoordinateOperator::Roll(E3_VECTOR &point, const double &angle)
-{
-	double buffer(0.0);
-
-	 buffer = point.y * cos(angle) - point.z * sin(angle);
-	point.z = point.y * sin(angle) + point.z * cos(angle);
-	point.y = buffer;
-}
-
-void CCoordinateOperator::Pitch(E3_VECTOR &point, const double &angle)
-{
-	double buffer(0.0);
-	 buffer = point.z * cos(angle) - point.x * sin(angle);
-	point.x = point.z * sin(angle) + point.x * cos(angle);
-	point.z = buffer;
-}
-
-void CCoordinateOperator::Yaw(E3_VECTOR &point, const double &angle)
-{
-	double buffer(0.0);
-	 buffer = point.x * cos(angle) - point.y * sin(angle);
-	point.y = point.x * sin(angle) + point.y * cos(angle);
-	point.x = buffer;
-}
-
-void CCoordinateOperator::Translation(E3_VECTOR &point, const E3_VECTOR &t)
-{
-	point += t;
-}
-
-double CCoordinateOperator::CalculateVectorModule(const E3_VECTOR &vector)
-{
-	return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-}
-
-double CCoordinateOperator::CalculateLenght(const E3_VECTOR &point1, const E3_VECTOR &point2)
-{
-	return sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y) + (point1.z - point2.z) * (point1.z - point2.z));
-}
-
-double CCoordinateOperator::Dot(const E3_VECTOR &point1, const E3_VECTOR &point2)
-{
-
-	return point1.x * point2.x + point1.y * point2.y + point1.z * point2.z;
-}
-
-double CCoordinateOperator::CalculateRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2)
-{
-	return acos(Dot(vector1, vector2) / (CalculateVectorModule(vector1) * CalculateVectorModule(vector2)));
 }
 
 unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DOBOT_POSITION &target)
@@ -272,12 +219,10 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 		buffer.position.z /= iter->zoom;
 
 		//Rotate
-		Yaw(buffer.position, -iter->r.z);
-		Pitch(buffer.position, -iter->r.y);
-		Roll(buffer.position, -iter->r.x);
+		buffer.position.InvRotate(-(iter->r));
 
 		//translation
-		Translation(buffer.position, -(iter->t));
+		buffer.position.Translation(-(iter->t));
 	}
 
 	target.position = buffer.position;
@@ -293,12 +238,10 @@ unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DO
 			return 1;//Have to be modified.
 
 		//translation
-		Translation(buffer.position, iter->t);
+		target.position.Translation(iter->t);
 
 		//Rotate
-		Roll(target.position, iter->r.x);
-		Pitch(target.position, iter->r.y);
-		Yaw(target.position, iter->r.z);
+		target.position.Rotate(iter->r);
 
 		//zoom
 		target.position.x *= iter->zoom;
@@ -347,7 +290,6 @@ unsigned CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, unsi
 		}
 	}
 	return 1;//have to be modify
-
 }
 
 unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &id)
@@ -365,15 +307,3 @@ unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &i
 	return 1;//have to be modify
 }
 
-// void CCoordinateOperator::SolPlaneEquation(const E3_VECTOR &p1, const E3_VECTOR &p2, const E3_VECTOR &p3, double &A, double &B, double &C, double &D)
-// {
-// 	E3_VECTOR p1p2(p2 - p1);
-// 	E3_VECTOR p1p3(p3 - p1);
-// 
-// 	E3_VECTOR normalVector(p1p2 * p1p3);
-// 
-// 	A = normalVector.x;
-// 	B = normalVector.y;
-// 	C = normalVector.z;
-// 	D = -p1.x * normalVector.x - p1.y * normalVector.y - p1.z * normalVector.z;
-// }

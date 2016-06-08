@@ -47,8 +47,8 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const DOBOT_POSITION& p1
 		return 1;//Have to modify
 	}
 
- 	double xLenght(m_pCoordinateOperator->CalculateVectorModule(p2.position - p1.position));
- 	double yLenght(m_pCoordinateOperator->CalculateVectorModule(p3.position - p1.position));
+	double xLenght((p2.position - p1.position).Module());
+	double yLenght((p3.position - p1.position).Module());
 
 	if (xLenght <= 0 || yLenght <=0)
 	{
@@ -137,7 +137,7 @@ unsigned CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet
 {
 	std::vector<PALLET>::iterator iter;
 	unsigned i(0);
-	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter,++i)
+	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter, ++i)
 	{
 		if (i == index)
 		{

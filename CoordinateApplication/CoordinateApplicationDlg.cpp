@@ -292,9 +292,9 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 	if (!m_radio_setType)
 	{//manual
 		E3_VECTOR r;
-		r.x = m_rotate_x;
-		r.y = m_rotate_y;
-		r.z = m_rotate_z;
+		r.x = Angle2Radian(m_rotate_x);
+		r.y = Angle2Radian(m_rotate_y);
+		r.z = Angle2Radian(m_rotate_z);
 
 		E3_VECTOR t;
 		t.x = m_trans_x;
@@ -328,7 +328,6 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 			//error handler
 		}
 		
-
 	}
 
 	UpdateCoordinate();
@@ -349,11 +348,11 @@ void CCoordinateApplicationDlg::AddCoordinate2List(const COORDINATE &coordinate)
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 3, str);
 	str.Format(_T("%f"), coordinate.t.z);
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 4, str);
-	str.Format(_T("%f"), coordinate.r.x);
+	str.Format(_T("%f"), Radian2Angle(coordinate.r.x));
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 5, str);
-	str.Format(_T("%f"), coordinate.r.y);
+	str.Format(_T("%f"), Radian2Angle(coordinate.r.y));
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 6, str);
-	str.Format(_T("%f"), coordinate.r.z);
+	str.Format(_T("%f"), Radian2Angle(coordinate.r.z));
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 7, str);
 	str.Format(_T("%f"), coordinate.zoom);
 	m_listCtrl_coordinate.SetItemText(coordinate.coordinate_id, 8, str);
@@ -501,8 +500,6 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 		{
 			//error handler
 		}
-
-
 	}
 
 	UpdateCoordinate();

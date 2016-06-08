@@ -10,73 +10,6 @@ public:
 	virtual ~CCoordinateOperator();
 
 	/*
-	@brief: This is a func to rotate a vector by an angle around X axis.
-	@author: JoMar
-	@param[in|out]: vector
-	@param[in]: angle
-	*/
-	void Roll(E3_VECTOR &vector, const double &angle);
-
-	/*
-	@brief: This is a func to rotate a point by an angle around Y axis.
-	@author: JoMar
-	@param[in|out]: vector
-	@param[in]: angle
-	*/
-	void Pitch(E3_VECTOR &vector, const double &angle);
-
-	/*
-	@brief: This is a func to rotate a point by an angle around Z axis.
-	@author: JoMar
-	@param[in|out]: vector
-	@param[in]: angle
-	*/
-	void Yaw(E3_VECTOR &vector, const double &angle);
-
-	/*
-	@brief: This is a func to translation a vector by an translation marix.
-	@author: JoMar
-	@param[in|out]: point
-	@param[in]: t - translation marix
-	*/
-	void Translation(E3_VECTOR &point, const E3_VECTOR &t);
-
-	/*
-	@brief: This is a func to calculate the module of a vector
-	@author: JoMar
-	@param[in]: vector
-	@return: module
-	*/
-	double CalculateVectorModule(const E3_VECTOR &vector);
-
-	/*
-	@brief: This is a func to calculate the lenght between two e3_point
-	@author: JoMar
-	@param[in]: point1
-	@param[in]: point2
-	@return: lenght
-	*/
-	double CalculateLenght(const E3_VECTOR &point1, const E3_VECTOR &point2);
-
-	/*
-	@brief: This is a func to calculate the dot product of two vector
-	@author: JoMar
-	@param[in]: point1
-	@param[in]: point2
-	@return: dot product
-	*/
-	double Dot(const E3_VECTOR &point1, const E3_VECTOR &point2);
-
-	/*
-	@brief: This is a func to calculate the angle of two vector
-	@author: JoMar
-	@param[in]: vector1
-	@param[in]: vector2
-	@return: radian
-	*/
-	double CalculateRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2);
-
-	/*
 	@brief: This is a func convert two coordinate.
 	@author: JoMar
 	@param[in]: origin - it's a coordinate preparing to convert.
@@ -128,11 +61,11 @@ public:
 	unsigned SetCoordinate(const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, DOBOT_POSITION &p1_target, DOBOT_POSITION &p2_target, DOBOT_POSITION &p3_target);
 
 	/*
-		@brief: This is a func to ergodic all coordinate in vector. 
-		@author: JoMar
-		@param[out]: coordinate
-		@param[in]: reStart
-		@return: if it is success, return 0; else, return a error code.
+	@brief: This is a func to ergodic all coordinate in vector. 
+	@author: JoMar
+	@param[out]: coordinate
+	@param[in]: reStart
+	@return: if it is success, return 0; else, return a error code.
 	*/
 	unsigned ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart = false);
 
@@ -166,23 +99,5 @@ private:
 	@return: A new ID base on the martix vector.
 	*/
 	inline unsigned GetNewIdOfTransitionMartix();
-
-// 	/*
-// 	@brief: This is a func to solve the equation of a plane base on 3 point.
-// 	@note: Ax+By+Cz+D=0
-// 	@author: JoMar
-// 	@param[in]: p1
-// 	@param[in]: p2
-// 	@param[in]: p3
-// 	@param[out]: A
-// 	@param[out]: B
-// 	@param[out]: C
-// 	@param[out]: D
-// 	*/
-// 	inline void SolPlaneEquation(const E3_VECTOR &p1, const  E3_VECTOR &p2, const E3_VECTOR &p3, double &A, double &B, double &C, double &D);
-
-
-
-
 };
 

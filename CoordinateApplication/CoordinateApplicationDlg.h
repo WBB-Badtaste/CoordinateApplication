@@ -44,6 +44,7 @@ public:
 	afx_msg void OnCbnSelchangeComboSelPallet();
 	afx_msg void OnBnClickedButtonCreatePallet();
 	afx_msg void OnCbnSelchangeComboPalletShowCoordinate();
+	afx_msg void OnBnClickedButtonChangePallet();
 	CComboBox m_comboBox_base_coordinate;
 	CComboBox m_comboBox_change_coordinate;
 	CComboBox m_combo_pallet_in_coordinate;
@@ -52,6 +53,7 @@ public:
 	CComboBox m_comboBox_pallet_show_coordinate;
 	CComboBox m_comboBox_copy_pallet;
 	CComboBox m_comboBox_change_pallet;
+	CComboBox m_combox_pallet_copy_coordinate;
 	CListCtrl m_listCtrl_coordinate;
 	CListCtrl m_listCtrl_pallets;
 	CString m_coordinate_note;
@@ -98,7 +100,4 @@ private:
 	void AddPallets2List();
 	void UpdateCoordinate();
 	void UpadtePallet();
-public:
-	CComboBox m_combox_pallet_copy_coordinate;
-	afx_msg void OnBnClickedButtonChangePallet();
 };
