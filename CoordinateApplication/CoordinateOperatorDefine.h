@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SpaceAgorithm.h"
+#include "Geometric.h"
 
 //There is a only one world coordinate, it has a special ID witch is 0.
 const unsigned WORLD_COORDINATE_ID(0);

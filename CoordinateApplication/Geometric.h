@@ -1,6 +1,8 @@
 #pragma once
 
-#include "E3_Vector.h"
+#include "E3_Point.h"
+#include "E3_Line.h"
+#include "E3_Plane.h"
 
 /*
 @brief: This is a func to calculate the lenght between two e3_point

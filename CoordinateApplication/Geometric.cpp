@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "SpaceAgorithm.h"
+#include "Geometric.h"
 
 
 double CalLenght(const E3_POINT &point1, const E3_POINT &point2)

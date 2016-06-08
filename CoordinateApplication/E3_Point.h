@@ -4,6 +4,7 @@ const double M_PI(atan2(0.0, -1.0));
 
 const double M_PI_2(M_PI / 2);
 
+
 /*
 @brief: This is a class of three-dimensional vector
 @param[in]: radian
@@ -109,5 +110,11 @@ typedef E3_VECTOR E3_POINT;
 @date: 2016-06-08
 */
 typedef E3_VECTOR E3_MARTIX;
+
+
+typedef class _e3_line
+{
+
+}E3_LINE;
 
 

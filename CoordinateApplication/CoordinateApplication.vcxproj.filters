@@ -45,10 +45,16 @@
     <ClInclude Include="PalletOperatorDefine.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="E3_Vector.h">
+    <ClInclude Include="E3_Point.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SpaceAgorithm.h">
+    <ClInclude Include="Geometric.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="E3_Line.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="E3_Plane.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,10 +74,16 @@
     <ClCompile Include="PalletOperator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="E3_Vector.cpp">
+    <ClCompile Include="E3_Point.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SpaceAgorithm.cpp">
+    <ClCompile Include="Geometric.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="E3_Line.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="E3_Plane.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
