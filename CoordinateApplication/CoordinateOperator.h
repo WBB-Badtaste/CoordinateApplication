@@ -10,36 +10,36 @@ public:
 	virtual ~CCoordinateOperator();
 
 	/*
-	@brief: This is a func to rotate a point by an angle around X axis.
+	@brief: This is a func to rotate a vector by an angle around X axis.
 	@author: JoMar
-	@param[in|out]: point
+	@param[in|out]: vector
 	@param[in]: angle
 	*/
-	inline void Roll(E3_VECTOR &point, const double &angle);
+	void Roll(E3_VECTOR &vector, const double &angle);
 
 	/*
 	@brief: This is a func to rotate a point by an angle around Y axis.
 	@author: JoMar
-	@param[in|out]: point
+	@param[in|out]: vector
 	@param[in]: angle
 	*/
-	inline void Pitch(E3_VECTOR &point, const double &angle);
+	void Pitch(E3_VECTOR &vector, const double &angle);
 
 	/*
 	@brief: This is a func to rotate a point by an angle around Z axis.
 	@author: JoMar
-	@param[in|out]: point
+	@param[in|out]: vector
 	@param[in]: angle
 	*/
-	inline void Yaw(E3_VECTOR &point, const double &angle);
+	void Yaw(E3_VECTOR &vector, const double &angle);
 
 	/*
-	@brief: This is a func to translation a point by an translation marix.
+	@brief: This is a func to translation a vector by an translation marix.
 	@author: JoMar
 	@param[in|out]: point
 	@param[in]: t - translation marix
 	*/
-	inline void Translation(E3_VECTOR &point, const E3_VECTOR &t);
+	void Translation(E3_VECTOR &point, const E3_VECTOR &t);
 
 	/*
 	@brief: This is a func to calculate the module of a vector
@@ -47,7 +47,7 @@ public:
 	@param[in]: vector
 	@return: module
 	*/
-	inline double CalculateVectorModule(const E3_VECTOR &vector);
+	double CalculateVectorModule(const E3_VECTOR &vector);
 
 	/*
 	@brief: This is a func to calculate the lenght between two e3_point
@@ -56,7 +56,7 @@ public:
 	@param[in]: point2
 	@return: lenght
 	*/
-	inline double CalculateLenght(const E3_VECTOR &point1, const E3_VECTOR &point2);
+	double CalculateLenght(const E3_VECTOR &point1, const E3_VECTOR &point2);
 
 	/*
 	@brief: This is a func to calculate the dot product of two vector
@@ -65,7 +65,7 @@ public:
 	@param[in]: point2
 	@return: dot product
 	*/
-	inline double Dot(const E3_VECTOR &point1, const E3_VECTOR &point2);
+	double Dot(const E3_VECTOR &point1, const E3_VECTOR &point2);
 
 	/*
 	@brief: This is a func to calculate the angle of two vector
@@ -74,7 +74,7 @@ public:
 	@param[in]: vector2
 	@return: radian
 	*/
-	inline double CalculateRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2);
+	double CalculateRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2);
 
 	/*
 	@brief: This is a func convert two coordinate.
