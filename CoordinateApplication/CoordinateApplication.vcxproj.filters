@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\Geometric">
+      <UniqueIdentifier>{7714df73-364d-484c-8547-b3dad970ac0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Geometric">
+      <UniqueIdentifier>{73cf9006-d3f2-4003-9a3b-726342193a4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Coordinate">
+      <UniqueIdentifier>{7d2f51f0-6fac-41da-b837-cf6d08d8246b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Coordinate">
+      <UniqueIdentifier>{1669538f-b30e-4196-b899-d25a9419e9f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Pallet">
+      <UniqueIdentifier>{5a2301be-2b65-4e12-bfde-f911071dbf7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Pallet">
+      <UniqueIdentifier>{7a9e39b4-7f96-4986-bea8-f5b1664ae97c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,29 +51,29 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CoordinateOperator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PalletOperator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CoordinateOperatorDefine.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PalletOperatorDefine.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="E3_Point.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometric.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="E3_Line.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Geometric</Filter>
     </ClInclude>
     <ClInclude Include="E3_Plane.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Geometric</Filter>
+    </ClInclude>
+    <ClInclude Include="E3_Point.h">
+      <Filter>头文件\Geometric</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometric.h">
+      <Filter>头文件\Geometric</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateOperator.h">
+      <Filter>头文件\Coordinate</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateOperatorDefine.h">
+      <Filter>头文件\Coordinate</Filter>
+    </ClInclude>
+    <ClInclude Include="PalletOperator.h">
+      <Filter>头文件\Pallet</Filter>
+    </ClInclude>
+    <ClInclude Include="PalletOperatorDefine.h">
+      <Filter>头文件\Pallet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,23 +86,23 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CoordinateOperator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PalletOperator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="E3_Point.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometric.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="E3_Line.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Geometric</Filter>
     </ClCompile>
     <ClCompile Include="E3_Plane.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Geometric</Filter>
+    </ClCompile>
+    <ClCompile Include="E3_Point.cpp">
+      <Filter>源文件\Geometric</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometric.cpp">
+      <Filter>源文件\Geometric</Filter>
+    </ClCompile>
+    <ClCompile Include="CoordinateOperator.cpp">
+      <Filter>源文件\Coordinate</Filter>
+    </ClCompile>
+    <ClCompile Include="PalletOperator.cpp">
+      <Filter>源文件\Pallet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

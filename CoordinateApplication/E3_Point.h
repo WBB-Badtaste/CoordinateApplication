@@ -7,7 +7,6 @@ const double M_PI_2(M_PI / 2);
 
 /*
 @brief: This is a class of three-dimensional vector
-@param[in]: radian
 @author: JoMar
 @date: 2016-06-08
 */
@@ -89,7 +88,6 @@ public:
 }
 /*
 @brief: This is a class of three-dimensional vector
-@param[in]: radian
 @author: JoMar
 @date: 2016-06-08
 */
@@ -97,7 +95,6 @@ E3_VECTOR;
 
 /*
 @brief: This is a class of three-dimensional point
-@param[in]: radian
 @author: JoMar
 @date: 2016-06-08
 */
@@ -105,16 +102,10 @@ typedef E3_VECTOR E3_POINT;
 
 /*
 @brief: This is a class of three-dimensional martix
-@param[in]: radian
 @author: JoMar
 @date: 2016-06-08
 */
 typedef E3_VECTOR E3_MARTIX;
 
-
-typedef class _e3_line
-{
-
-}E3_LINE;
 
 
