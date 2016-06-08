@@ -137,7 +137,7 @@ unsigned CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet
 {
 	std::vector<PALLET>::iterator iter;
 	unsigned i(0);
-	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter, ++i)
+	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter,++i)
 	{
 		if (i == index)
 		{

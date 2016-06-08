@@ -72,6 +72,7 @@ unsigned CCoordinateOperator::SetCoordinate
 	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
 		return 1;//Have to be modify.
 
+	double a(CalRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position));
 	if (CalRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position) != M_PI_2)
 		return 1;//Have to be modify
 
@@ -89,7 +90,7 @@ unsigned CCoordinateOperator::SetCoordinate
 	E3_VECTOR position2_target((p2_buffer.position - p1_buffer.position).Module(), 0, 0);
 	E3_VECTOR position3_target(0, (p3_buffer.position - p1_buffer.position).Module(), 0);
 
-	E3_VECTOR t_target;
+	E3_MARTIX t_target;
 	t_target = -p1_buffer.position;
 
 	p1_buffer.position.Translation(t_target);
@@ -99,7 +100,7 @@ unsigned CCoordinateOperator::SetCoordinate
  	//solve the normal Vector of plane with p2_buffer, p3_buffer and origin.
 	E3_VECTOR normalVector(p2_buffer.position * p3_buffer.position);
 
-	E3_VECTOR r_target;
+	E3_MARTIX r_target;
 
 	//rotate the normal Vector to parallel to z axis by an angle. And this angle is the x angle of the rotation martix.
 	//!!pay attention to let normalVector on xz-plane of world coordinate
@@ -155,11 +156,12 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 	//calculate the transfer martix of the target coordinate.
 
 	//calculate the zoom
-	double lenght1_world((p2_world.position - p1_world.position).Module());
-	double lenght2_world((p3_world.position - p1_world.position).Module());
+	double lenght1_world((p1_world.position - p2_world.position).Module());
+	double lenght2_world((p1_world.position - p3_world.position).Module());
 	double lenght3_world((p2_world.position - p3_world.position).Module());
-	double lenght1_target((p2_target.position - p1_target.position).Module());
-	double lenght2_target((p3_target.position - p1_target.position).Module());
+
+	double lenght1_target((p1_target.position - p2_target.position).Module());
+	double lenght2_target((p1_target.position - p3_target.position).Module());
 	double lenght3_target((p2_target.position - p3_target.position).Module());
 
 	double zoom_target((lenght1_target + lenght2_target + lenght3_target) / (lenght1_world + lenght2_world + lenght3_world));
@@ -189,6 +191,7 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 
 	return 0;
 }
+
 
 unsigned CCoordinateOperator::ConvertCoordinate(const DOBOT_POSITION &origin, DOBOT_POSITION &target)
 {
@@ -290,6 +293,7 @@ unsigned CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, unsi
 		}
 	}
 	return 1;//have to be modify
+
 }
 
 unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &id)
@@ -307,3 +311,15 @@ unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &i
 	return 1;//have to be modify
 }
 
+// void CCoordinateOperator::SolPlaneEquation(const E3_VECTOR &p1, const E3_VECTOR &p2, const E3_VECTOR &p3, double &A, double &B, double &C, double &D)
+// {
+// 	E3_VECTOR p1p2(p2 - p1);
+// 	E3_VECTOR p1p3(p3 - p1);
+// 
+// 	E3_VECTOR normalVector(p1p2 * p1p3);
+// 
+// 	A = normalVector.x;
+// 	B = normalVector.y;
+// 	C = normalVector.z;
+// 	D = -p1.x * normalVector.x - p1.y * normalVector.y - p1.z * normalVector.z;
+// }

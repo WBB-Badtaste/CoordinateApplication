@@ -328,6 +328,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 			//error handler
 		}
 		
+
 	}
 
 	UpdateCoordinate();
@@ -500,6 +501,8 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 		{
 			//error handler
 		}
+
+
 	}
 
 	UpdateCoordinate();

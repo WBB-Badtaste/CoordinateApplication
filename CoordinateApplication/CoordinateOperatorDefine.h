@@ -88,8 +88,6 @@ typedef struct _note
 //the strust of coodinate
 typedef struct _coordinate
 {
-	
-
 	unsigned coordinate_id;
 	E3_VECTOR t;
 	E3_VECTOR r;

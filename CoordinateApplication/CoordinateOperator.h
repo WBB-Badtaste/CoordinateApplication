@@ -61,11 +61,11 @@ public:
 	unsigned SetCoordinate(const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, DOBOT_POSITION &p1_target, DOBOT_POSITION &p2_target, DOBOT_POSITION &p3_target);
 
 	/*
-	@brief: This is a func to ergodic all coordinate in vector. 
-	@author: JoMar
-	@param[out]: coordinate
-	@param[in]: reStart
-	@return: if it is success, return 0; else, return a error code.
+		@brief: This is a func to ergodic all coordinate in vector. 
+		@author: JoMar
+		@param[out]: coordinate
+		@param[in]: reStart
+		@return: if it is success, return 0; else, return a error code.
 	*/
 	unsigned ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart = false);
 
@@ -99,5 +99,23 @@ private:
 	@return: A new ID base on the martix vector.
 	*/
 	inline unsigned GetNewIdOfTransitionMartix();
+
+// 	/*
+// 	@brief: This is a func to solve the equation of a plane base on 3 point.
+// 	@note: Ax+By+Cz+D=0
+// 	@author: JoMar
+// 	@param[in]: p1
+// 	@param[in]: p2
+// 	@param[in]: p3
+// 	@param[out]: A
+// 	@param[out]: B
+// 	@param[out]: C
+// 	@param[out]: D
+// 	*/
+// 	inline void SolPlaneEquation(const E3_VECTOR &p1, const  E3_VECTOR &p2, const E3_VECTOR &p3, double &A, double &B, double &C, double &D);
+
+
+
+
 };
 

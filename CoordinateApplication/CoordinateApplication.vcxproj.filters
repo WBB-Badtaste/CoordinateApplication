@@ -45,7 +45,7 @@
     <ClInclude Include="PalletOperatorDefine.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="E3_vector.h">
+    <ClInclude Include="E3_Vector.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="SpaceAgorithm.h">
@@ -68,7 +68,7 @@
     <ClCompile Include="PalletOperator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="E3_vector.cpp">
+    <ClCompile Include="E3_Vector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SpaceAgorithm.cpp">
