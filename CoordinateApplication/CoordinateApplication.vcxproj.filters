@@ -31,6 +31,12 @@
     <Filter Include="源文件\Pallet">
       <UniqueIdentifier>{7a9e39b4-7f96-4986-bea8-f5b1664ae97c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\DobotStatusHandle">
+      <UniqueIdentifier>{19725f6a-efa2-43e0-9665-d7c0b0826a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\DobotStatusHandle">
+      <UniqueIdentifier>{bd53dddf-aad6-4639-8f53-443be97e5a66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,6 +81,12 @@
     <ClInclude Include="PalletOperatorDefine.h">
       <Filter>头文件\Pallet</Filter>
     </ClInclude>
+    <ClInclude Include="DobotStatusDefine.h">
+      <Filter>头文件\DobotStatusHandle</Filter>
+    </ClInclude>
+    <ClInclude Include="DobotStatusHandle.h">
+      <Filter>头文件\DobotStatusHandle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoordinateApplication.cpp">
@@ -103,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="PalletOperator.cpp">
       <Filter>源文件\Pallet</Filter>
+    </ClCompile>
+    <ClCompile Include="DobotStatusHandle.cpp">
+      <Filter>源文件\DobotStatusHandle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

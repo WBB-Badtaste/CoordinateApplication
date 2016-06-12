@@ -1,6 +1,7 @@
 #pragma once
 #include "CoordinateOperator.h"
 #include "PalletOperatorDefine.h"
+#include "DobotStatusHandle.h"
 
 /*
 @brief: This is a class witch operating the pallet.
@@ -25,7 +26,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned SetPallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2);
+	DOBOT_STATUS SetPallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2);
 
 	/*
 	@brief: This is a func to modify the pallet by using 3 special point. If the coordinate isn't existence, it will create a new one.
@@ -40,7 +41,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned SetPallet(unsigned &palletId, const DOBOT_POSITION& p1, const DOBOT_POSITION &p2, const DOBOT_POSITION p3, const unsigned &zoneNum1, const unsigned &zoneNum2);
+	DOBOT_STATUS SetPallet(unsigned &palletId, const DOBOT_POSITION& p1, const DOBOT_POSITION &p2, const DOBOT_POSITION p3, const unsigned &zoneNum1, const unsigned &zoneNum2);
 
 	/*
 	@brief: This is a func to modify the pallet by copying another pallet. If the coordinate isn't existence, it will create a new one.
@@ -51,7 +52,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId);
+	DOBOT_STATUS SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId);
 
 	/*
 	@brief: This is a func to delete the pallet
@@ -60,7 +61,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned DeletePallet(const unsigned& id);
+	DOBOT_STATUS DeletePallet(const unsigned& id);
 
 	/*
 	@brief: This is a func to get the position of a cell on the pallet.
@@ -73,7 +74,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned GetPalletCell(const unsigned &palletId, const unsigned &zoneIndex1, const unsigned &zoneIndex2, DOBOT_POSITION &position);
+	DOBOT_STATUS GetPalletCell(const unsigned &palletId, const unsigned &zoneIndex1, const unsigned &zoneIndex2, DOBOT_POSITION &position);
 
 	/*
 	@brief: This is a func to get the pallet in vector.
@@ -84,7 +85,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned GetPallet(const unsigned &palletId, PALLET &pallet);
+	DOBOT_STATUS GetPallet(const unsigned &palletId, PALLET &pallet);
 
 	/*
 	@brief: This is a func to get the pallet in vector.
@@ -96,7 +97,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned GetPalletByIndex(const unsigned &index, PALLET &pallet);
+	DOBOT_STATUS GetPalletByIndex(const unsigned &index, PALLET &pallet);
 
 
 	/*
@@ -108,7 +109,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned GetPalletId(const unsigned &index, unsigned& palletId);
+	DOBOT_STATUS GetPalletId(const unsigned &index, unsigned& palletId);
 
 	/*
 	@brief: This is a func to ergodic all pallet in vector.
@@ -118,7 +119,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	unsigned ErgodicAllPallet(PALLET &pallet, bool reStart = false);
+	DOBOT_STATUS ErgodicAllPallet(PALLET &pallet, bool reStart = false);
 
 
 private:

@@ -103,10 +103,12 @@
   <ItemGroup>
     <ClInclude Include="CoordinateApplication.h" />
     <ClInclude Include="CoordinateApplicationDlg.h" />
+    <ClInclude Include="DobotStatusDefine.h" />
     <ClInclude Include="CoordinateOperator.h" />
     <ClInclude Include="E3_Line.h" />
     <ClInclude Include="E3_Plane.h" />
     <ClInclude Include="E3_Point.h" />
+    <ClInclude Include="DobotStatusHandle.h" />
     <ClInclude Include="PalletOperator.h" />
     <ClInclude Include="PalletOperatorDefine.h" />
     <ClInclude Include="Resource.h" />
@@ -118,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="CoordinateApplication.cpp" />
     <ClCompile Include="CoordinateApplicationDlg.cpp" />
+    <ClCompile Include="DobotStatusHandle.cpp" />
     <ClCompile Include="CoordinateOperator.cpp" />
     <ClCompile Include="E3_Line.cpp" />
     <ClCompile Include="E3_Plane.cpp" />

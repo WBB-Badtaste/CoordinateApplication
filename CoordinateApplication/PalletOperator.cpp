@@ -13,13 +13,13 @@ CPalletOperator::~CPalletOperator()
 {
 }
 
-unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2)
+DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const unsigned &coordinateId, const double &xLenght, const double &yLenght, unsigned zoneNum1, unsigned zoneNum2)
 {
 	if (xLenght <= 0 || yLenght <= 0)
-		return 1;//Have to be modify
+		return DOBOT_ERR_PALLET_SET_NONLENGHT;
 
 	if (zoneNum1 < 2 || zoneNum2 < 2)
-		return 1;//Have to be modify
+		return DOBOT_ERR_PALLET_SET_ZONE_LESS;
 	
 	std::vector<PALLET>::iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
@@ -27,7 +27,7 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned &coordina
 		if (iter->id_pallet == palletId)
 		{
 			iter->Reset(coordinateId, xLenght, yLenght, zoneNum1, zoneNum2);
-			return 0;
+			return DOBOT_SUC_PALLET_MODIFY;
 		}
 	}
 
@@ -40,14 +40,14 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned &coordina
 	//sort the vector
 	std::sort(m_pallets.begin(), m_pallets.end(), AscendingSortById);
 
-	return 0;
+	return DOBOT_SUC_PALLET_CREATE;
 }
 
-unsigned CPalletOperator::SetPallet(unsigned &palletId, const DOBOT_POSITION& p1, const DOBOT_POSITION &p2, const DOBOT_POSITION p3, const unsigned &zoneNum1, const unsigned &zoneNum2)
+DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const DOBOT_POSITION& p1, const DOBOT_POSITION &p2, const DOBOT_POSITION p3, const unsigned &zoneNum1, const unsigned &zoneNum2)
 {
 	if (zoneNum1 < 2 || zoneNum2 < 2)
 	{
-		return 1;//Have to modify
+		return DOBOT_ERR_PALLET_SET_ZONE_LESS;
 	}
 
 	double xLenght((p2.position - p1.position).Module());
@@ -55,21 +55,21 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const DOBOT_POSITION& p1
 
 	if (xLenght <= 0 || yLenght <=0)
 	{
-		return 1;//Have to modify
+		return DOBOT_ERR_PALLET_SET_NONLENGHT;//Have to modify
 	}
 
 	unsigned coordinateId(0);
 
+	DOBOT_STATUS dobotStatus(DOBOT_OK);
 	TCHAR *str(_T("ÍÐÅÌ×ø±êÏµ"));
-	if (m_pCoordinateOperator->SetCoordinate(coordinateId, p1, p2, p3, str, _tcslen(str)))
-		return 1;//Have to be modify
 
-	SetPallet(palletId, coordinateId, xLenght, yLenght, zoneNum1, zoneNum2);
+	if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId, p1, p2, p3, str, _tcslen(str))))
+		return DOBOT_ERR_PALLET_SET_CREATE_COORD;
 
-	return 0;
+	return SetPallet(palletId, coordinateId, xLenght, yLenght, zoneNum1, zoneNum2);
 }
 
-unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId)
+DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId)
 {
 	std::vector<PALLET>::iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
@@ -79,15 +79,14 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned& coordint
 	}
 
 	if (iter == m_pallets.end())
-		return 1;//Have to be modify.
+		return DOBOT_ERR_PALLET_SET_ORIGIN_NONEXISTENT;
 
 	const E3_VECTOR &point(iter->user_points[iter->zoneNumX - 1][iter->zoneNumY - 1].position);
 
-	SetPallet(palletId, coordinteIdofPallet, point.x, point.y, iter->zoneNumX, iter->zoneNumY);
-	return 0;
+	return SetPallet(palletId, coordinteIdofPallet, point.x, point.y, iter->zoneNumX, iter->zoneNumY);
 }
 
-unsigned CPalletOperator::DeletePallet(const unsigned& id)
+DOBOT_STATUS CPalletOperator::DeletePallet(const unsigned& id)
 {
 	std::vector<PALLET>::iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
@@ -99,13 +98,13 @@ unsigned CPalletOperator::DeletePallet(const unsigned& id)
 
 			std::sort(m_pallets.begin(), m_pallets.end(), AscendingSortById);
 
-			return 0;
+			return DOBOT_SUC_PALLET_DEL;
 		}
 	}
-	return 1;//Have to be modify.
+	return DOBOT_ERR_PALLET_DEL_NONEXISTENT;
 }
 
-unsigned CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned &zoneNum1, const unsigned &zoneNum2, DOBOT_POSITION &position)
+DOBOT_STATUS CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned &zoneNum1, const unsigned &zoneNum2, DOBOT_POSITION &position)
 {
 	std::vector<PALLET>::iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
@@ -114,18 +113,19 @@ unsigned CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned
 			break;
 	}
 
-	if (iter == m_pallets.begin())
-		return 1;//Have to be modified.
+	if (iter == m_pallets.end())
+		return DOBOT_ERR_PALLET_GETCELL_PALLET_NONEXISTENT;
 
-	DOBOT_POSITION buffer;
-	buffer = iter->user_points[zoneNum1][zoneNum2];
+	if (zoneNum1 >= iter->zoneNumX || zoneNum2 >= iter->zoneNumY)
+		return DOBOT_ERR_PALLET_GETCELL_ZONE_OVER;
 
-	m_pCoordinateOperator->ConvertPosition(buffer, position);
+	if (DobotError(m_pCoordinateOperator->ConvertPosition(iter->user_points[zoneNum1][zoneNum2], position)))
+		return DOBOT_ERR_PALLET_GETCELL_CONVERT;
 
-	return 0;
+	return DOBOT_SUC_PALLET_GETCELL;
 }
 
-unsigned CPalletOperator::GetPallet(const unsigned &palletId, PALLET &pallet)
+DOBOT_STATUS CPalletOperator::GetPallet(const unsigned &palletId, PALLET &pallet)
 {
 	std::vector<PALLET>::iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
@@ -133,13 +133,13 @@ unsigned CPalletOperator::GetPallet(const unsigned &palletId, PALLET &pallet)
 		if (palletId == iter->id_pallet)
 		{
 			pallet = *iter;
-			return 0;
+			return DOBOT_SUC_PALLET_GETPALLET;
 		}
 	}
-	return 1;//Have to be modify
+	return DOBOT_ERR_PALLET_GETPALLET_NONEXISTENT;
 }
 
-unsigned CPalletOperator::GetPalletId(const unsigned &index, unsigned& palletId)
+DOBOT_STATUS CPalletOperator::GetPalletId(const unsigned &index, unsigned& palletId)
 {
 	unsigned i(0);
 	std::vector<PALLET>::iterator iter;
@@ -148,13 +148,13 @@ unsigned CPalletOperator::GetPalletId(const unsigned &index, unsigned& palletId)
 		if (i == index)
 		{
 			palletId = iter->id_pallet;
-			return 0;
+			return DOBOT_SUC_PALLET_GETPALLETID;
 		}
 	}
-	return 1;//Have to be modify
+	return DOBOT_ERR_PALLET_GETPALLETID_NONEXISTENT;
 }
 
-unsigned CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet)
+DOBOT_STATUS CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet)
 {
 	std::vector<PALLET>::iterator iter;
 	unsigned i(0);
@@ -163,17 +163,17 @@ unsigned CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet
 		if (i == index)
 		{
 			pallet = *iter;
-			return 0;
+			return DOBOT_SUC_PALLET_GETPALLET_BYINDEX;
 		}
 	}
-	return 1;//Have to be modify
+	return DOBOT_ERR_PALLET_GETPALLETID_BYINDEX_NONEXISTENT;
 }
 
-unsigned CPalletOperator::ErgodicAllPallet(PALLET &pallet, bool reStart /* = false */)
+DOBOT_STATUS CPalletOperator::ErgodicAllPallet(PALLET &pallet, bool reStart /* = false */)
 {
 	unsigned palletAmount(m_pallets.size());
 	if (palletAmount < 1)
-		return 1;//have to be modify
+		return DOBOT_ERR_PALLET_ERGODIC_EMPTY;
 
 	if (reStart)
 		m_iter = m_pallets.begin();
@@ -181,11 +181,11 @@ unsigned CPalletOperator::ErgodicAllPallet(PALLET &pallet, bool reStart /* = fal
 		++m_iter;
 
 	if (m_iter == m_pallets.end())
-		return 1;//have to be modify
+		return DOBOT_WAR_PALLET_ERGODIC_END;
 
 	pallet = *m_iter;
 
-	return 0;
+	return DOBOT_SUC_PALLET_ERGODIC;
 }
 
 unsigned CPalletOperator::GetNewIdOfPallet()

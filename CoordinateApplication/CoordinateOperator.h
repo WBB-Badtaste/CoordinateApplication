@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 
+#include "DobotStatusHandle.h"
 
 /*
 @brief: This is a class witch operating the whole coordinate system.
@@ -24,7 +25,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned ConvertPosition(const DOBOT_POSITION &origin, DOBOT_POSITION &target);
+	DOBOT_STATUS ConvertPosition(const DOBOT_POSITION &origin, DOBOT_POSITION &target);
 
 	/*
 	@brief: This is a func to modify the coordinate. If the coordinate isn't existence, it will create a new one.
@@ -39,7 +40,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned SetCoordinate(unsigned &id, const E3_VECTOR &t, const E3_VECTOR &r, const double &zoom, const TCHAR* const str, const unsigned &strSize);
+	DOBOT_STATUS SetCoordinate(unsigned &id, const E3_VECTOR &t, const E3_VECTOR &r, const double &zoom, const TCHAR* const str, const unsigned &strSize);
 
 	/*
 	@brief: This is a func to modify the coordinate by using 3 special point. If the coordinate isn't existence, it will create a new one.
@@ -55,7 +56,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned SetCoordinate(unsigned &id, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, const TCHAR* const str, const unsigned &strSize, const bool& bParallelX = false);
+	DOBOT_STATUS SetCoordinate(unsigned &id, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, const TCHAR* const str, const unsigned &strSize, const bool& bParallelX = false);
 
 	/*
 	@brief: This is a func to delete the coordinate 
@@ -64,7 +65,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned DeleteCoordinate(const unsigned& id);
+	DOBOT_STATUS DeleteCoordinate(const unsigned& id);
 
 	/*
 	@brief: This is a func to ergodic all coordinate in vector. 
@@ -74,7 +75,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart = false);
+	DOBOT_STATUS ErgodicAllCoordinate(COORDINATE &coordinate, bool reStart = false);
 
 	/*
 	@brief: This is a func to get the id and type of the coordinate.
@@ -85,7 +86,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned GetCoordianteIdAndNote(const unsigned &index, unsigned &id, TCHAR* str, unsigned &strSize);
+	DOBOT_STATUS GetCoordianteIdAndNote(const unsigned &index, unsigned &id, TCHAR* str, unsigned &strSize);
 
 	/*
 	@brief: This is a func to get the id of the coordinate.
@@ -95,7 +96,7 @@ public:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned GetCoordianteId(const unsigned &index, unsigned &id);
+	DOBOT_STATUS GetCoordianteId(const unsigned &index, unsigned &id);
 
 private:
 	/*
