@@ -26,6 +26,8 @@ double Dot(const E3_VECTOR &vector1, const E3_VECTOR &vector2);
 
 /*
 @brief: This is a func to calculate the angle of two e3_vector
+@note: Radian system
+@note: The return value is a principal value between 0 and +pi
 @param[in]: vector1
 @param[in]: vector2
 @return: radian

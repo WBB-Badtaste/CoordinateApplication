@@ -72,7 +72,6 @@ unsigned CCoordinateOperator::SetCoordinate
 	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
 		return 1;//Have to be modify.
 
-	double a(CalRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position));
 	if (CalRadian(p2_base.position - p1_base.position, p3_base.position - p1_base.position) != M_PI_2)
 		return 1;//Have to be modify
 
@@ -152,7 +151,6 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 // 		 
 // 	SetCoordinate(planeCoordinateId, PLANE_COORDINATE, t_plane, r_plane, zoom);
 
-
 	//calculate the transfer martix of the target coordinate.
 
 	//calculate the zoom
@@ -185,7 +183,6 @@ unsigned CCoordinateOperator::SetCoordinate(const DOBOT_POSITION &p1_base, const
 	r_target.z = 0;
 
 //	r_target.y = atan2()
-
 		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 	//修改目标坐标系ID
 

@@ -10,28 +10,28 @@
 typedef struct _standard
 {
 	double x0, y0, z0;
-	double m, n, p;
+	double l, m, n;
 
-	_standard() : x0(0), y0(0), z0(0), m(0), n(0), p(0){};
+	_standard() : x0(0), y0(0), z0(0), l(0), m(0), n(0){};
 
 	_standard(
 		const double& newX0,
 		const double& newY0,
 		const double& newZ0,
+		const double& newL,
 		const double& newM,
-		const double& newN,
-		const double& newP ) :x0(newX0), y0(newY0), z0(newZ0), m(newM), n(newN), p(newP){};
+		const double& newN) :x0(newX0), y0(newY0), z0(newZ0), l(newL), m(newM), n(newN){};
 
-	_standard(const _standard& newObject) : x0(newObject.x0), y0(newObject.y0), z0(newObject.z0), m(newObject.m), n(newObject.n), p(newObject.p){};
+	_standard(const _standard& newObject) : x0(newObject.x0), y0(newObject.y0), z0(newObject.z0), l(newObject.l), m(newObject.m), n(newObject.n){};
 
 	_standard& operator=(const _standard& object)
 	{
 		x0 = object.x0;
 		y0 = object.y0;
 		z0 = object.z0;
+		l = object.l;
 		m = object.m;
 		n = object.n;
-		p = object.p;
 		return *this;
 	}
 }
@@ -40,7 +40,7 @@ typedef struct _standard
 @author: JoMar
 @date: 2016-06-08
 */
-STANDARD;
+STANDARD, E3_LINE_STANDARD;
 
 /*
 @brief: This is a struct to store parameters of commonly line-equation which in three-dimensional
@@ -84,26 +84,32 @@ typedef struct _common
 @author: JoMar
 @date: 2016-06-08
 */
-COMMON;
+COMMON, E3_LINE_COMMON;
 
 /*
 @brief: This is a class of three-dimensional line
 @author: JoMar
 @date: 2016-06-08
 */
-typedef class _e3_Line
+typedef class _e3_line
 {
 public:
 	STANDARD S;
+
 	COMMON C;
 
-	~_e3_Line();
-	_e3_Line();
-	_e3_Line(const _e3_Line& newObject);
-	_e3_Line(const STANDARD& newS);
+	~_e3_line();
 
-	
-private:
+	_e3_line();
+
+	_e3_line(const _e3_line& newObject);
+
+	_e3_line(const STANDARD& newS);
+
+	_e3_line(const COMMON& newC);
+
+	_e3_line(const E3_POINT& point1, const E3_POINT& point2);
+
 }
 /*
 @brief: This is a class of three-dimensional line
