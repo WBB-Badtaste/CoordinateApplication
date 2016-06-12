@@ -58,6 +58,15 @@ public:
 	unsigned SetCoordinate(unsigned &id, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, const TCHAR* const str, const unsigned &strSize, const bool& bParallelX = false);
 
 	/*
+	@brief: This is a func to delete the coordinate 
+	@param[in]: id - coordinate id. 
+	@return: if it is success, return 0; else, return a error code.
+	@author: JoMar
+	@date: 2016-06-12
+	*/
+	unsigned DeleteCoordinate(const unsigned& id);
+
+	/*
 	@brief: This is a func to ergodic all coordinate in vector. 
 	@param[out]: coordinate
 	@param[in]: reStart

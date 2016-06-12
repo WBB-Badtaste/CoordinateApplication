@@ -54,6 +54,15 @@ public:
 	unsigned SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId);
 
 	/*
+	@brief: This is a func to delete the pallet
+	@param[in]: id - pallet id.
+	@return: if it is success, return 0; else, return a error code.
+	@author: JoMar
+	@date: 2016-06-12
+	*/
+	unsigned DeletePallet(const unsigned& id);
+
+	/*
 	@brief: This is a func to get the position of a cell on the pallet.
 	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
 	@param[in]: palletId - the id of pallet

@@ -131,6 +131,24 @@ unsigned CCoordinateOperator::SetCoordinate
 	return SetCoordinate(id, t_target, r_target, COORDINATE_DEFAULT_ZOOM, str, strSize);
 }
 
+unsigned CCoordinateOperator::DeleteCoordinate(const unsigned& id)
+{
+	std::vector<COORDINATE>::iterator iter;
+	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter)
+	{
+		if (id == iter->coordinate_id)
+		{
+			m_vector_TM.erase(iter);
+			m_iter = m_vector_TM.begin();
+
+			std::sort(m_vector_TM.begin(), m_vector_TM.end(), AscendingSortById);
+
+			return 0;
+		}
+	}
+	return 1;//Have to be modify.
+}
+
 unsigned CCoordinateOperator::ConvertPosition(const DOBOT_POSITION &origin, DOBOT_POSITION &target)
 {
 	if (origin.coordinate_id == target.coordinate_id)

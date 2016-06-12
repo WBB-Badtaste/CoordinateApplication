@@ -87,6 +87,24 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned& coordint
 	return 0;
 }
 
+unsigned CPalletOperator::DeletePallet(const unsigned& id)
+{
+	std::vector<PALLET>::iterator iter;
+	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
+	{
+		if (id == iter->id_pallet)
+		{
+			m_pallets.erase(iter);
+			m_iter = m_pallets.begin();
+
+			std::sort(m_pallets.begin(), m_pallets.end(), AscendingSortById);
+
+			return 0;
+		}
+	}
+	return 1;//Have to be modify.
+}
+
 unsigned CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned &zoneNum1, const unsigned &zoneNum2, DOBOT_POSITION &position)
 {
 	std::vector<PALLET>::iterator iter;
