@@ -42,33 +42,19 @@ public:
 
 	/*
 	@brief: This is a func to modify the coordinate by using 3 special point. If the coordinate isn't existence, it will create a new one.
-	@note: Transition martix is base on the world coordinate. The convert sequence: translation->roll->ptich->yaw->zoom
 	@param[in|out]: id - coordinate id. Func will renturn a new Id, when the id isn't existence in vector;
 	@param[in]: p1_b - the point1 in base coordinate
 	@param[in]: p2_b - the point2 in base coordinate
 	@param[in]: p3_b - the point3 in base coordinate
 	@param[in]: str - string of note
 	@param[in]: strSize - the size of string
+	@param[in]: bParallelX - if user wanna the porjection of X-axis of target coordinate parallel to X-axis of base coordinate, input true; else, input false.
+	@note: if bParallelX equal to false, that mean the vector<p2_b, p1_b> is the X-axis dirrection of target coordinate
 	@return: if it is success, return 0; else, return a error code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	unsigned SetCoordinate(unsigned &id, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, const TCHAR* const str, const unsigned &strSize);
-
-	/*
-	@brief: This is a func to modify the coordinate by using 3 special point. If the coordinate isn't existence, it will create a new one.
-	@note: Transition martix is base on the world coordinate. The convert sequence: translation->roll->ptich->yaw->zoom
-	@param[in]: p1_b - the point1 in base coordinate
-	@param[in]: p2_b - the point2 in base coordinate
-	@param[in]: p3_b - the point3 in base coordinate
-	@param[in|out]: p1_t - the point1 in target coordinate. Func will renturn a new coordinate id to p1_t, when the id isn't existence;
-	@param[in|out]: p2_t - the point2 in target coordinate. Func will renturn a new coordinate id to p2_t, when the id isn't existence;
-	@param[in|out]: p3_t - the point3 in target coordinate. Func will renturn a new coordinate id to p3_t, when the id isn't existence;
-	@return: if it is success, return 0; else, return a error code.
-	@author: JoMar
-	@date: 2016-06-12
-	*/
-//	unsigned SetCoordinate(const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, DOBOT_POSITION &p1_target, DOBOT_POSITION &p2_target, DOBOT_POSITION &p3_target);
+	unsigned SetCoordinate(unsigned &id, const DOBOT_POSITION &p1_base, const DOBOT_POSITION &p2_base, const DOBOT_POSITION &p3_base, const TCHAR* const str, const unsigned &strSize, const bool& bParallelX = false);
 
 	/*
 	@brief: This is a func to ergodic all coordinate in vector. 

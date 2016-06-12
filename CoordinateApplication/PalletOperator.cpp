@@ -93,7 +93,7 @@ unsigned CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned
 			break;
 	}
 
-	if (iter == m_pallets.begin() )
+	if (iter == m_pallets.begin())
 		return 1;//Have to be modified.
 
 	DOBOT_POSITION buffer;

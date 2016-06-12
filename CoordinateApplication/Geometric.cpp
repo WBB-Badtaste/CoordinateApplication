@@ -34,7 +34,7 @@ double CalRadian(const E3_PLANE& plane1, const E3_PLANE& plane2)
 	return radian;
 }
 
-double Angle2Radian(const double &angle) 
+double Angle2Radian(const double &angle)
 {
 	return angle / 180.0 * M_PI;
 }
