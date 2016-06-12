@@ -2,6 +2,7 @@
 
 #include "CoordinateOperatorDefine.h"
 #include <vector>
+#include <algorithm>
 
 
 /*
@@ -110,6 +111,11 @@ private:
 	*/
 	inline unsigned GetNewIdOfTransitionMartix();
 
-
+	/*
+	@brief: This is a callback function to ascending sort the vector by id
+	@author: JoMar
+	@date: 2016-06-12
+	*/
+	static bool AscendingSortById(const COORDINATE& coordinate1, const COORDINATE& coordinate2);
 };
 

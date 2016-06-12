@@ -37,6 +37,9 @@ unsigned CPalletOperator::SetPallet(unsigned &palletId, const unsigned &coordina
 	PALLET pallet(palletId, coordinateId, xLenght, yLenght, zoneNum1, zoneNum2);
 	m_pallets.push_back(pallet);
 
+	//sort the vector
+	std::sort(m_pallets.begin(), m_pallets.end(), AscendingSortById);
+
 	return 0;
 }
 
@@ -148,7 +151,6 @@ unsigned CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet
 	return 1;//Have to be modify
 }
 
-
 unsigned CPalletOperator::ErgodicAllPallet(PALLET &pallet, bool reStart /* = false */)
 {
 	unsigned palletAmount(m_pallets.size());
@@ -173,7 +175,20 @@ unsigned CPalletOperator::GetNewIdOfPallet()
 	if (m_pallets.size() < 1)
 		return 0;//the vector of transition martix is empty, return 0.
 	else
-		return (m_pallets.end() - 1)->id_pallet + 1;//the vector of transition martix isn't empty, return (id + 1) of last element.
+	{
+		unsigned id(0);
+		std::vector<PALLET>::iterator iter;
+		for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter, ++id)
+		{
+			if (id != iter->id_pallet)
+				break;
+		}
+		return id;
+	}
 
 }
 
+bool CPalletOperator::AscendingSortById(const PALLET& pallet1, const PALLET& pallet2)
+{
+	return pallet1.id_pallet < pallet2.id_pallet;
+}

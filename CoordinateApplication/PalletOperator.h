@@ -141,5 +141,12 @@ private:
 	@date: 2016-06-08
 	*/
 	inline unsigned GetNewIdOfPallet();
+
+	/*
+	@brief: This is a callback function to ascending sort the vector by id
+	@author: JoMar
+	@date: 2016-06-12
+	*/
+	static bool AscendingSortById(const PALLET& pallet1, const PALLET& pallet2);
 };
 

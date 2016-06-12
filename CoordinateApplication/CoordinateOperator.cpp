@@ -24,8 +24,16 @@ unsigned CCoordinateOperator::GetNewIdOfTransitionMartix()
 	if (m_vector_TM.size() < 1)
 		return 0;//the vector of transition martix is empty, return 0.
 	else
-		return (m_vector_TM.end() - 1)->coordinate_id + 1;//the vector of transition martix isn't empty, return (id + 1) of last element.
-														  //There is a bug when the id is too big.
+	{
+		unsigned id(0);
+		std::vector<COORDINATE>::iterator iter;
+		for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++id)
+		{
+			if (id != iter->coordinate_id)
+				break;
+		}
+		return id;
+	}
 }
 
 unsigned CCoordinateOperator::SetCoordinate
@@ -57,6 +65,9 @@ unsigned CCoordinateOperator::SetCoordinate
 	//Create a new martix base on the auto id.
     COORDINATE coordinate(t, r, id, zoom, note);
 	m_vector_TM.push_back(coordinate);
+
+	//sort the vector
+	std::sort(m_vector_TM.begin(), m_vector_TM.end(), AscendingSortById);
 
 	return 0;
 }
@@ -231,4 +242,9 @@ unsigned CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &i
 		}
 	}
 	return 1;//have to be modify
+}
+
+bool CCoordinateOperator::AscendingSortById(const COORDINATE& coordinate1, const COORDINATE& coordinate2)
+{
+	return coordinate1.coordinate_id < coordinate2.coordinate_id;
 }
