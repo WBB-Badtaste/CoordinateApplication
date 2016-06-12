@@ -83,6 +83,13 @@ void _e3_vector::Translation(const _e3_vector &t)
 	*this += t;
 }
 
+void _e3_vector::Zoom(const double &ratio)
+{
+	this->x *= ratio;
+	this->y *= ratio;
+	this->z *= ratio;
+}
+
 double _e3_vector::Module() const
 {
 	return sqrt(x * x + y * y + z * z);

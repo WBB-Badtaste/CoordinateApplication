@@ -1,18 +1,19 @@
 #pragma once
 
 #include "E3_Point.h"
+#include "E3_Plane.h"
 
 /*
 @brief: This is a struct to store parameters of standard line-equation which in three-dimensional
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-12
 */
 typedef struct _standard
 {
-	double x0, y0, z0;
-	double l, m, n;
+	E3_POINT point;
+	E3_VECTOR direction;
 
-	_standard() : x0(0), y0(0), z0(0), l(0), m(0), n(0){};
+	_standard(){};
 
 	_standard(
 		const double& newX0,
@@ -20,39 +21,37 @@ typedef struct _standard
 		const double& newZ0,
 		const double& newL,
 		const double& newM,
-		const double& newN) :x0(newX0), y0(newY0), z0(newZ0), l(newL), m(newM), n(newN){};
+		const double& newN) :point(newX0, newY0, newZ0), direction(newL,newM,newN){};
 
-	_standard(const _standard& newObject) : x0(newObject.x0), y0(newObject.y0), z0(newObject.z0), l(newObject.l), m(newObject.m), n(newObject.n){};
+	_standard(const E3_POINT& newPoint, const E3_VECTOR& newDirection) :point(newPoint), direction(newDirection){};
+
+	_standard(const _standard& newObject) : point(newObject.point), direction(newObject.direction){};
 
 	_standard& operator=(const _standard& object)
 	{
-		x0 = object.x0;
-		y0 = object.y0;
-		z0 = object.z0;
-		l = object.l;
-		m = object.m;
-		n = object.n;
+		point = object.point;
+		direction = object.direction;
 		return *this;
 	}
 }
 /*
 @brief: This is a struct to store parameters of standard line-equation which in three-dimensional
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-12
 */
 STANDARD, E3_LINE_STANDARD;
 
 /*
 @brief: This is a struct to store parameters of commonly line-equation which in three-dimensional
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-12
 */
 typedef struct _common
 {
-	double a1, b1, c1, d1;
-	double a2, b2, c2, d2;
+	E3_PLANE plane1;
+	E3_PLANE plane2;
 
-	_common() : a1(0), b1(0), c1(0), d1(0), a2(0), b2(0), c2(0), d2(0){};
+	_common(){};
 
 	_common(
 		const double& newA1,
@@ -62,34 +61,30 @@ typedef struct _common
 		const double& newA2,
 		const double& newB2,
 		const double& newC2,
-		const double& newD2) : a1(newA1), b1(newB1), c1(newC1), d1(newD1), a2(newA2), b2(newB2), c2(newC2), d2(newD2){};
+		const double& newD2) : plane1(newA1, newB1, newC1, newD1), plane2(newA2,newB2,newC2,newD2){};
 
-	_common(const _common& newObject) : a1(newObject.a1), b1(newObject.b1), c1(newObject.c1), d1(newObject.d1), a2(newObject.a2), b2(newObject.b2), c2(newObject.c2), d2(newObject.d2){};
+	_common(const _common& newObject) : plane1(newObject.plane1), plane2(newObject.plane2){};
+
+	_common(const E3_PLANE& newPlane1, const E3_PLANE& newPlane2) :plane1(newPlane1), plane2(newPlane2){};
 
 	_common& operator=(const _common& object)
 	{
-		a1 = object.a1;
-		b1 = object.b1;
-		c1 = object.c1;
-		d1 = object.d1;
-		a2 = object.a2;
-		b2 = object.b2;
-		c2 = object.c2;
-		d2 = object.d2;
+		plane1 = object.plane1;
+		plane2 = object.plane2;
 		return *this;
 	}
 }
 /*
 @brief: This is a struct to store parameters of commonly line-equation which in three-dimensional
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-12
 */
 COMMON, E3_LINE_COMMON;
 
 /*
 @brief: This is a class of three-dimensional line
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-12
 */
 typedef class _e3_line
 {
@@ -110,11 +105,20 @@ public:
 
 	_e3_line(const E3_POINT& point1, const E3_POINT& point2);
 
+	_e3_line(const E3_PLANE& plane1, const E3_PLANE& plane2);
+
+	_e3_line(
+		const double& a1, const double& b1, const double& c1, const double& d1,
+		const double& a2, const double& b2, const double& c2, const double& d2);
+
+	_e3_line(
+		const double& x0, const double& y0, const double& z0,
+		const double& l, const double& m, const double& n);
 }
 /*
 @brief: This is a class of three-dimensional line
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-12
 */
 E3_LINE;
 

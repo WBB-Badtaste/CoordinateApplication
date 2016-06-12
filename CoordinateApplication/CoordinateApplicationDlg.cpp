@@ -602,7 +602,7 @@ void CCoordinateApplicationDlg::AddPallets2List()
 		DOBOT_POSITION position;
 		m_pCoordinateOperator->GetCoordianteIdAndNote(m_comboBox_pallet_show_coordinate.GetCurSel(), position.coordinate_id, note, strSize);
 
-		m_pCoordinateOperator->ConvertCoordinate(pallet.user_points[i][j], position);
+		m_pCoordinateOperator->ConvertPosition(pallet.user_points[i][j], position);
 
 		str.Format(_T("%03u"), i);
 		m_listCtrl_pallets.InsertItem(i + j, str);

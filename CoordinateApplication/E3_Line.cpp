@@ -10,36 +10,47 @@ _e3_line::_e3_line(const _e3_line& newObject) :S(newObject.S), C(newObject.C){}
 
 _e3_line::_e3_line(const STANDARD& newS) :S(newS)
 {
-	C.a1 = S.m;
-	C.b1 = -S.l;
-	C.c1 = 0;
-	C.d1 = S.l * S.y0 - S.m * S.x0;
+	
+	C.plane1.a = S.direction.y;
+	C.plane1.b = -S.direction.x;
+	C.plane1.c = 0;
+	C.plane1.d = S.direction.x * S.point.y - S.direction.y * S.point.x;
 
-	C.a2 = 0;
-	C.b2 = S.n;
-	C.c2 = -S.m;
-	C.d2 = S.m * S.z0 - S.n * S.y0;
+	C.plane2.a = 0;
+	C.plane2.b = S.direction.z;
+	C.plane2.c = -S.direction.y;
+	C.plane2.d = S.direction.y * S.point.z - S.direction.z * S.point.y;
 }
 
 _e3_line::_e3_line(const COMMON& newC) :C(newC)
 {
-	//two normal vector of planes
-	E3_VECTOR nv1(C.a1, C.b1, C.c1);
-	E3_VECTOR nv2(C.a2, C.b2, C.c2);
+	S.direction = C.plane1.NormalVector() * C.plane2.NormalVector();
 
-	//direction vector of line
-	E3_VECTOR dv(nv1 * nv2);
-
-	S.l = dv.x;
-	S.m = dv.y;
-	S.n = dv.z;
-	
-	S.x0 = (C.d2 - C.d1 * C.b2 / C.b1) / (C.a1 * C.a2 / C.b1 - C.a2);
-	S.y0 = -(S.x0 * C.a1 + C.d1) / C.b1;
-	S.z0 = 0;
+	S.point.x = (C.plane2.d - C.plane1.d * C.plane2.b / C.plane1.b) / (C.plane1.a * C.plane2.b / C.plane1.b - C.plane2.a);
+	S.point.y = -(S.point.x * C.plane1.a + C.plane1.d) / C.plane1.b;
+	S.point.z = 0;
 }
 
 _e3_line::_e3_line(const E3_POINT& point1, const E3_POINT& point2)
 {
-	_e3_line(STANDARD(point1.x, point1.y, point1.z, point1.x - point2.x, point1.y - point2.y, point1.z - point2.z));
+	_e3_line(STANDARD(point1, point2 - point1));
+}
+
+_e3_line::_e3_line(const E3_PLANE& plane1, const E3_PLANE& plane2)
+{
+	_e3_line(COMMON(plane1, plane2));
+}
+
+_e3_line::_e3_line(
+	const double& a1, const double& b1, const double& c1, const double& d1,
+	const double& a2, const double& b2, const double& c2, const double& d2)
+{
+	_e3_line(COMMON(a1, b1, c1, d1, a2, b2, c2, d2));
+}
+
+_e3_line::_e3_line(
+	const double& x0, const double& y0, const double& z0, 
+	const double& l, const double& m, const double& n)
+{
+	_e3_line(STANDARD(x0, y0, z0, l, m, n));
 }

@@ -18,6 +18,22 @@ double CalRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2)
 	return acos(Dot(vector1, vector2) / vector1.Module() / vector2.Module());
 }
 
+double CalRadian(const E3_VECTOR& vector, const E3_PLANE& plane)
+{
+	double radian(CalRadian(vector, plane.NormalVector()));
+	if (radian > M_PI_2)
+		radian -= M_PI_2;
+	return M_PI_2 - radian;
+}
+
+double CalRadian(const E3_PLANE& plane1, const E3_PLANE& plane2)
+{
+	double radian(CalRadian(plane1.NormalVector(), plane2.NormalVector()));
+	if (radian > M_PI_2)
+		radian -= M_PI_2;
+	return radian;
+}
+
 double Angle2Radian(const double &angle) 
 {
 	return angle / 180.0 * M_PI;

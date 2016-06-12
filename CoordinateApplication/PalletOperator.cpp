@@ -99,7 +99,7 @@ unsigned CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned
 	DOBOT_POSITION buffer;
 	buffer = iter->user_points[zoneNum1][zoneNum2];
 
-	m_pCoordinateOperator->ConvertCoordinate(buffer, position);
+	m_pCoordinateOperator->ConvertPosition(buffer, position);
 
 	return 0;
 }

@@ -41,6 +41,8 @@ public:
 	@brief: This is a func to rotate a vector by a radian around X axis.
 	@note: radian system
 	@param[in]: radian
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	void Roll(const double &radian);
 
@@ -48,6 +50,8 @@ public:
 	@brief: This is a func to rotate a vector by a radian around Y axis.
 	@note: radian system
 	@param[in]: radian
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	void Pitch(const double &radian);
 
@@ -55,6 +59,8 @@ public:
 	@brief: This is a func to rotate a vector by a radian around Z axis.
 	@note: radian system
 	@param[in]: radian
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	void Yaw(const double &radian);
 
@@ -63,6 +69,8 @@ public:
 	@note: rotate sequence: x->y->z
 	@note: radian system
 	@param[in]: r - rotate martix
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	void Rotate(const _e3_vector &r);
 
@@ -71,18 +79,32 @@ public:
 	@note: rotate sequence: z->y->x
 	@note: radian system
 	@param[in]: r - rotate martix
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	void InvRotate(const _e3_vector &r);
 
 	/*
 	@brief: This is a func to translation a vector by an translation marix.
 	@param[in]: t - translation marix
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	void Translation(const _e3_vector &t);
 
 	/*
+	@brief: This is a func to zoom a point.
+	@param[in]: t - translation marix
+	@author: JoMar
+	@date: 2016-06-12
+	*/
+	void Zoom(const double &ratio);
+
+	/*
 	@brief: This is a func to calculate the module of a vector
 	@return: module
+	@author: JoMar
+	@date: 2016-06-08
 	*/
 	double Module() const;
 }
