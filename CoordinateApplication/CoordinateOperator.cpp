@@ -63,7 +63,7 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 	id = GetNewIdOfTransitionMartix();
 
 	//Create a new martix base on the auto id.
-    COORDINATE coordinate(t, r, id, zoom, note);
+	COORDINATE coordinate(t, r, id, zoom, note);
 	m_vector_TM.push_back(coordinate);
 
 	//sort the vector
@@ -112,19 +112,20 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 	//rotate the normal Vector to parallel to z axis by an angle. And this angle is the y angle of the rotation martix.
 	r_target.y = -atan2(normalVector.x, normalVector.z);
 
+	p2_buffer.position.Roll(r_target.x);
+	p2_buffer.position.Pitch(r_target.y);
+
 	if (bParallelX)
 	{
 		//rotate the x Vector to parallel to x axis by an angle. And this angle is the z angle of the rotation martix.
 		DOBOT_POSITION xDirection(p1_base.coordinate_id, E3_VECTOR(1,0,0));
 		xDirection.position.Roll(r_target.x);
 		xDirection.position.Pitch(r_target.y);
-		r_target.z = -atan2(xDirection.position.y, xDirection.position.x);
+		r_target.z = -atan2(p2_buffer.position.y - xDirection.position.y, p2_buffer.position.x- xDirection.position.x);
 	}
 	else
 	{
 		//rotate the x Vector to parallel to x axis by an angle. And this angle is the z angle of the rotation martix.
-		p2_buffer.position.Roll(r_target.x);
-		p2_buffer.position.Pitch(r_target.y);
 		r_target.z = -atan2(p2_buffer.position.y, p2_buffer.position.x);
 	}
 	
