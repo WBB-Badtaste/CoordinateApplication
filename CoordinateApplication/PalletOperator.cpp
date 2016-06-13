@@ -71,7 +71,7 @@ DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const DOBOT_POSITION
 
 DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const unsigned& coordinteIdofPallet, const unsigned& originPalletId)
 {
-	std::vector<PALLET>::iterator iter;
+	std::vector<PALLET>::const_iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
 	{
 		if (iter->id_pallet == originPalletId)
@@ -88,7 +88,7 @@ DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const unsigned& coor
 
 DOBOT_STATUS CPalletOperator::DeletePallet(const unsigned& id)
 {
-	std::vector<PALLET>::iterator iter;
+	std::vector<PALLET>::const_iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
 	{
 		if (id == iter->id_pallet)
@@ -106,7 +106,7 @@ DOBOT_STATUS CPalletOperator::DeletePallet(const unsigned& id)
 
 DOBOT_STATUS CPalletOperator::GetPalletCell(const unsigned &palletId, const unsigned &zoneNum1, const unsigned &zoneNum2, DOBOT_POSITION &position)
 {
-	std::vector<PALLET>::iterator iter;
+	std::vector<PALLET>::const_iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
 	{
 		if (palletId == iter->id_pallet)
@@ -127,7 +127,7 @@ DOBOT_STATUS CPalletOperator::GetPalletCell(const unsigned &palletId, const unsi
 
 DOBOT_STATUS CPalletOperator::GetPallet(const unsigned &palletId, PALLET &pallet)
 {
-	std::vector<PALLET>::iterator iter;
+	std::vector<PALLET>::const_iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter)
 	{
 		if (palletId == iter->id_pallet)
@@ -142,7 +142,7 @@ DOBOT_STATUS CPalletOperator::GetPallet(const unsigned &palletId, PALLET &pallet
 DOBOT_STATUS CPalletOperator::GetPalletId(const unsigned &index, unsigned& palletId)
 {
 	unsigned i(0);
-	std::vector<PALLET>::iterator iter;
+	std::vector<PALLET>::const_iterator iter;
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter, ++i)
 	{
 		if (i == index)
@@ -156,7 +156,7 @@ DOBOT_STATUS CPalletOperator::GetPalletId(const unsigned &index, unsigned& palle
 
 DOBOT_STATUS CPalletOperator::GetPalletByIndex(const unsigned &index, PALLET &pallet)
 {
-	std::vector<PALLET>::iterator iter;
+	std::vector<PALLET>::const_iterator iter;
 	unsigned i(0);
 	for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter,++i)
 	{
@@ -195,7 +195,7 @@ unsigned CPalletOperator::GetNewIdOfPallet()
 	else
 	{
 		unsigned id(0);
-		std::vector<PALLET>::iterator iter;
+		std::vector<PALLET>::const_iterator iter;
 		for (iter = m_pallets.begin(); iter != m_pallets.end(); ++iter, ++id)
 		{
 			if (id != iter->id_pallet)

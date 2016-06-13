@@ -22,7 +22,7 @@ public:
 	@param[in]: yLenght - the lenght of y axis
 	@param[in]: zoneNum1 - the zone number of p1 to p2
 	@param[in]: zoneNum2 - the zone number of p1 to p3
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -31,13 +31,13 @@ public:
 	/*
 	@brief: This is a func to modify the pallet by using 3 special point. If the coordinate isn't existence, it will create a new one.
 	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
-	@param[in|out]: palletId - the id of pallet.Func will renturn a new Id, when the id isn't existence in vector
+	@param[in|out]: palletId - the id of pallet.Func will return a new Id, when the id isn't existence in vector
 	@param[in]: p1 - the position of point 1
 	@param[in]: p2 - the position of point 2
 	@param[in]: p3 - the position of point 3
 	@param[in]: zoneNum1 - the zone number of p1 to p2 
 	@param[in]: zoneNum2 - the zone number of p1 to p3
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -48,7 +48,7 @@ public:
 	@param[in|out]: palletId - the id of pallet. Func will renturn a new Id, when the id isn't existence in vector
 	@param[in]: coordinteIdofPallet - the coordinate id of target pallet
 	@param[in]: originPalletId - the id of origin pallet
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -57,7 +57,7 @@ public:
 	/*
 	@brief: This is a func to delete the pallet
 	@param[in]: id - pallet id.
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -70,7 +70,7 @@ public:
 	@param[in]: zoneIndex1 - X index
 	@param[in]: zoneIndex2 - Y index
 	@param[out]: position
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -81,7 +81,7 @@ public:
 	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
 	@param[in]: palletId - the id of pallet
 	@param[out]: pallet
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -93,7 +93,7 @@ public:
 	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
 	@param[in]: index - the index of pallet in vector
 	@param[out]: pallet
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -105,7 +105,7 @@ public:
 	@note: p1 is the origin of pallet; p2 is on X axis; p3 is on Y axis
 	@param[in]: index - the index of pallet in vector
 	@param[out]: palletId - the id of pallet
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -115,7 +115,7 @@ public:
 	@brief: This is a func to ergodic all pallet in vector.
 	@param[out]: pallet
 	@param[in]: reStart
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-08
 	*/
@@ -142,7 +142,7 @@ private:
 	@author: JoMar
 	@date: 2016-06-08
 	*/
-	std::vector<PALLET>::iterator m_iter;
+	std::vector<PALLET>::const_iterator m_iter;
 
 	/*
 	@brief: This is a func to get a new ID base on the vector.

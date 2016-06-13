@@ -17,7 +17,7 @@ _e3_vector& _e3_vector::operator=(const _e3_vector& newObject)
 	return *this;
 }
 
-_e3_vector _e3_vector::operator-()
+_e3_vector _e3_vector::operator-() const
 {
 	return _e3_vector(-x, -y, -z);
 }

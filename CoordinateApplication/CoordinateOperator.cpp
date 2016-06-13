@@ -26,7 +26,7 @@ unsigned CCoordinateOperator::GetNewIdOfTransitionMartix()
 	else
 	{
 		unsigned id(0);
-		std::vector<COORDINATE>::iterator iter;
+		std::vector<COORDINATE>::const_iterator iter;
 		for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++id)
 		{
 			if (id != iter->coordinate_id)
@@ -133,7 +133,7 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 
 DOBOT_STATUS CCoordinateOperator::DeleteCoordinate(const unsigned& id)
 {
-	std::vector<COORDINATE>::iterator iter;
+	std::vector<COORDINATE>::const_iterator iter;
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter)
 	{
 		if (id == iter->coordinate_id)
@@ -159,7 +159,7 @@ DOBOT_STATUS CCoordinateOperator::ConvertPosition(const DOBOT_POSITION &origin, 
 
 	E3_POINT worldPosition(origin.position);
 
-	std::vector<COORDINATE>::iterator iter;
+	std::vector<COORDINATE>::const_iterator iter;
 
 	//Convert to world coordinate first.
 	if (origin.coordinate_id != WORLD_COORDINATE_ID)
@@ -226,7 +226,7 @@ DOBOT_STATUS CCoordinateOperator::ErgodicAllCoordinate(COORDINATE &coordinate, b
 
 DOBOT_STATUS CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, unsigned &id, TCHAR* str, unsigned &strSize)
 {
-	std::vector<COORDINATE>::iterator iter;
+	std::vector<COORDINATE>::const_iterator iter;
 	unsigned i(0);
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++i)
 	{
@@ -249,7 +249,7 @@ DOBOT_STATUS CCoordinateOperator::GetCoordianteIdAndNote(const unsigned &index, 
 
 DOBOT_STATUS CCoordinateOperator::GetCoordianteId(const unsigned &index, unsigned &id)
 {
-	std::vector<COORDINATE>::iterator iter;
+	std::vector<COORDINATE>::const_iterator iter;
 	unsigned i(0);
 	for (iter = m_vector_TM.begin(); iter != m_vector_TM.end(); ++iter, ++i)
 	{

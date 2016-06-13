@@ -303,12 +303,13 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 
 		double zoom = m_ratio;
 
-		m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
+		if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
+			return;
 	}
 	else
 	{//auto
 		unsigned coordinateId_base(0);
-		if (!m_pCoordinateOperator->GetCoordianteId(m_comboBox_base_coordinate.GetCurSel(), coordinateId_base))
+		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_comboBox_base_coordinate.GetCurSel(), coordinateId_base)))
 		{
 			DOBOT_POSITION p1(coordinateId_base), p2(coordinateId_base), p3(coordinateId_base);
 			p1.position.x = coordinate_point1_x;
@@ -321,7 +322,8 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 			p3.position.y = coordinate_point3_y;
 			p3.position.z = coordinate_point3_z;
 
-			m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
+			if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
+				return;
 		}
 		else
 		{
@@ -375,7 +377,8 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 	COORDINATE coordinate;
 	CString str;
 
-	if (!m_pCoordinateOperator->ErgodicAllCoordinate(coordinate, true))
+	bool bStart(true);
+	while (DobotSuccess(m_pCoordinateOperator->ErgodicAllCoordinate(coordinate, bStart)))
 	{
 		str.Format(_T("%03u"), coordinate.coordinate_id);
 		m_comboBox_base_coordinate.AddString(str);
@@ -385,18 +388,7 @@ void CCoordinateApplicationDlg::UpdateCoordinate()
 		m_comboBox_pallet_show_coordinate.AddString(str);
 		m_combox_pallet_copy_coordinate.AddString(str);
 		AddCoordinate2List(coordinate);
-
-		while (!m_pCoordinateOperator->ErgodicAllCoordinate(coordinate))
-		{
-			str.Format(_T("%03u"), coordinate.coordinate_id);
-			m_comboBox_base_coordinate.AddString(str);
-			m_comboBox_change_coordinate.AddString(str);
-			m_combo_pallet_in_coordinate.AddString(str);
-			m_combo_pallet_base_coordinate.AddString(str);
-			m_comboBox_pallet_show_coordinate.AddString(str);
-			m_combox_pallet_copy_coordinate.AddString(str);
-			AddCoordinate2List(coordinate);
-		}
+		bStart = false;
 	}
 
 	m_comboBox_base_coordinate.SetCurSel(0);
@@ -416,20 +408,14 @@ void CCoordinateApplicationDlg::UpadtePallet()
 	m_comboBox_change_pallet.ResetContent();
 	m_comboBox_copy_pallet.ResetContent();
 
-	if (!m_pPallerOperator->ErgodicAllPallet(pallet, true))
+	bool bStart(true);
+	while (DobotSuccess(m_pPallerOperator->ErgodicAllPallet(pallet, bStart)))
 	{
 		str.Format(_T("%03u"), pallet.id_pallet);
 		m_combo_show_pallet.AddString(str);
 		m_comboBox_change_pallet.AddString(str);
 		m_comboBox_copy_pallet.AddString(str);
-
-		while (!m_pPallerOperator->ErgodicAllPallet(pallet))
-		{
-			str.Format(_T("%03u"), pallet.id_pallet);
-			m_combo_show_pallet.AddString(str);
-			m_comboBox_change_pallet.AddString(str);
-			m_comboBox_copy_pallet.AddString(str);
-		}
+		bStart = false;
 	}
 
 	m_combo_show_pallet.SetCurSel(0);
@@ -457,7 +443,8 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 	UpdateData(TRUE);
 
 	unsigned coordinateId_target(0);
-	m_pCoordinateOperator->GetCoordianteId(m_comboBox_change_coordinate.GetCurSel(), coordinateId_target);
+	if (DobotSuccess(m_pCoordinateOperator->GetCoordianteId(m_comboBox_change_coordinate.GetCurSel(), coordinateId_target)))
+		return;
 
 	unsigned strSize(m_coordinate_note.GetLength() * sizeof(TCHAR));
 
@@ -475,14 +462,15 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 
 		double zoom = m_ratio;
 
-		m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
+		if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
+			return;
 	}
 	else
 	{//auto
 
 		unsigned coordinateId_base(0);
 		unsigned index(m_comboBox_base_coordinate.GetCurSel());
-		if (!m_pCoordinateOperator->GetCoordianteId(index, coordinateId_base))
+		if (DobotSuccess(m_pCoordinateOperator->GetCoordianteId(index, coordinateId_base)))
 		{
 			DOBOT_POSITION p1(coordinateId_base), p2(coordinateId_base), p3(coordinateId_base);
 			p1.position.x = coordinate_point1_x;
@@ -495,7 +483,8 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 			p3.position.y = coordinate_point3_y;
 			p3.position.z = coordinate_point3_z;
 
-			m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize);
+			if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
+				return;
 		}
 		else
 		{
@@ -525,7 +514,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 	switch (m_radio_set_pallet_mode)
 	{
 	case 0:
-		if (!m_pCoordinateOperator->GetCoordianteId(baseCoordinateIndex, baseCoordinateIdOfPoint))
+		if (DobotSuccess(m_pCoordinateOperator->GetCoordianteId(baseCoordinateIndex, baseCoordinateIdOfPoint)))
 		{
 			DOBOT_POSITION
 				p1(baseCoordinateIdOfPoint),
@@ -542,26 +531,33 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 			p3.position.y = m_point3_pallet_y;
 			p3.position.z = m_point3_pallet_z;
 
-			m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet);
+			if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet)))
+			{
+				m_pCoordinateOperator->DeleteCoordinate(baseCoordinateIndex);
+				return;
+			}
+				
 
 			UpdateCoordinate();
 		}
 		break;
 	case 1:
-		if (m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet)))
 			return;
 
-		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet);
+		if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet)))
+			return;
 		
 		break;
 	case 2:
-		if (m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet)))
 			return;
 
-		if (m_pPallerOperator->GetPalletId(m_comboBox_copy_pallet.GetCurSel(), originPalletId))
+		if (DobotError(m_pPallerOperator->GetPalletId(m_comboBox_copy_pallet.GetCurSel(), originPalletId)))
 			return;
 
-		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, originPalletId);
+		if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, originPalletId)))
+			return;
 
 		break;
 	default:
@@ -589,7 +585,8 @@ void CCoordinateApplicationDlg::AddPallets2List()
 	unsigned indexOfPallet(m_combo_show_pallet.GetCurSel());
 	PALLET pallet;
 
-	m_pPallerOperator->GetPalletByIndex(indexOfPallet, pallet);
+	if (DobotError(m_pPallerOperator->GetPalletByIndex(indexOfPallet, pallet)))
+		return;
 
 	m_listCtrl_pallets.DeleteAllItems();
 
@@ -600,9 +597,11 @@ void CCoordinateApplicationDlg::AddPallets2List()
 		TCHAR note[20];
 		unsigned strSize(0);
 		DOBOT_POSITION position;
-		m_pCoordinateOperator->GetCoordianteIdAndNote(m_comboBox_pallet_show_coordinate.GetCurSel(), position.coordinate_id, note, strSize);
+		if (DobotError(m_pCoordinateOperator->GetCoordianteIdAndNote(m_comboBox_pallet_show_coordinate.GetCurSel(), position.coordinate_id, note, strSize)))
+			return;
 
-		m_pCoordinateOperator->ConvertPosition(pallet.user_points[i][j], position);
+		if (DobotError(m_pCoordinateOperator->ConvertPosition(pallet.user_points[i][j], position)))
+			return;
 
 		str.Format(_T("%03u"), i);
 		m_listCtrl_pallets.InsertItem(i + j, str);
@@ -664,8 +663,8 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangePallet()
 
 	unsigned idOfPallet(0);
 
-	if (m_pPallerOperator->GetPalletId(m_comboBox_change_pallet.GetCurSel(), idOfPallet))
-		return;//Have to be modify
+	if (DobotError(m_pPallerOperator->GetPalletId(m_comboBox_change_pallet.GetCurSel(), idOfPallet)))
+		return;
 
 	unsigned baseCoordinateIdOfPoint(0);
 	unsigned baseCoordinateIdOfPallet(0);
@@ -675,7 +674,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangePallet()
 	switch (m_radio_set_pallet_mode)
 	{
 	case 0:
-		if (!m_pCoordinateOperator->GetCoordianteId(baseCoordinateIndex, baseCoordinateIdOfPoint))
+		if (DobotSuccess(m_pCoordinateOperator->GetCoordianteId(baseCoordinateIndex, baseCoordinateIdOfPoint)))
 		{
 			DOBOT_POSITION
 				p1(baseCoordinateIdOfPoint),
@@ -692,26 +691,33 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangePallet()
 			p3.position.y = m_point3_pallet_y;
 			p3.position.z = m_point3_pallet_z;
 
-			m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet);
+			if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet)))
+			{
+				m_pCoordinateOperator->DeleteCoordinate(baseCoordinateIndex);
+				return;
+			}
+				
 
 			UpdateCoordinate();
 		}
 		break;
 	case 1:
-		if (m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet)))
 			return;
 
-		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet);
+		if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, m_x_lenght_pallet, m_y_lenght_pallet, m_x_amount_pallet, m_y_amount_pallet)))
+			return;
 
 		break;
 	case 2:
-		if (m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet))
+		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet)))
 			return;
 
-		if (m_pPallerOperator->GetPalletId(m_comboBox_copy_pallet.GetCurSel(), originPalletId))
+		if (DobotError(m_pPallerOperator->GetPalletId(m_comboBox_copy_pallet.GetCurSel(), originPalletId)))
 			return;
 
-		m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, originPalletId);
+		if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, baseCoordinateIdOfPallet, originPalletId)))
+			return;
 
 		break;
 	default:

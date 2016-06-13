@@ -169,7 +169,7 @@ typedef struct _coordinate
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	void Reset(const E3_VECTOR& newT, const E3_VECTOR& newR, const double& newZoom, const NOTE& newNote)
+	void Reset(const E3_VECTOR& newT, const E3_VECTOR& newR, const double& newZoom, const NOTE& newNote) 
 	{
 		t = newT;
 		r = newR;

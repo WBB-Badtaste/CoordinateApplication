@@ -21,7 +21,7 @@ public:
 	@brief: This is a func convert a position between two coordinate.
 	@param[in]: origin - it's a coordinate preparing to convert.
 	@param[in|out]: target - it's a coordinate convert to. The martix id of target have to be defined.
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -36,7 +36,7 @@ public:
 	@param[in]: zoom
 	@param[in]: str - string of note
 	@param[in]: strSize - the size of string
-	@return: if it is success, return 0; else, return a error code.
+	@return:  dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -52,7 +52,7 @@ public:
 	@param[in]: strSize - the size of string
 	@param[in]: bParallelX - if user wanna the porjection of X-axis of target coordinate parallel to X-axis of base coordinate, input true; else, input false.
 	@note: if bParallelX equal to false, that mean the vector<p2_b, p1_b> is the X-axis dirrection of target coordinate
-	@return: if it is success, return 0; else, return a error code.
+	@return:  dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -61,7 +61,7 @@ public:
 	/*
 	@brief: This is a func to delete the coordinate 
 	@param[in]: id - coordinate id. 
-	@return: if it is success, return 0; else, return a error code.
+	@return:  dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -71,7 +71,7 @@ public:
 	@brief: This is a func to ergodic all coordinate in vector. 
 	@param[out]: coordinate
 	@param[in]: reStart
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -82,7 +82,7 @@ public:
 	@param[in]: index - index of the coordinate in vector
 	@param[out]: id - id of the coordinate
 	@param[out]: type - type of the coordinate
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -92,7 +92,7 @@ public:
 	@brief: This is a func to get the id of the coordinate.
 	@param[in]: index - index of the coordinate in vector
 	@param[out]: id - id of the coordinate
-	@return: if it is success, return 0; else, return a error code.
+	@return: dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
 	@date: 2016-06-12
 	*/
@@ -111,7 +111,7 @@ private:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	std::vector<COORDINATE>::iterator m_iter;
+	std::vector<COORDINATE>::const_iterator m_iter;
 
 	/*
 	@brief: This is a func to get a new ID base on the vector.

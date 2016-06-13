@@ -30,7 +30,7 @@ public:
 
 	_e3_vector& operator+=(const _e3_vector& object);
 
-	_e3_vector operator-();
+	_e3_vector operator-() const;
 
 	friend _e3_vector operator-(const _e3_vector& objectL, const _e3_vector& objectR);
 
