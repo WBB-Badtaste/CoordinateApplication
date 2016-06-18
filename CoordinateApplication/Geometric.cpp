@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Geometric.h"
+#include "Eigen\Dense"
 
 
 double CalLenght(const E3_POINT &point1, const E3_POINT &point2)
@@ -43,4 +44,18 @@ double Angle2Radian(const double &angle)
 double Radian2Angle(const double &radian) 
 {
 	return radian / M_PI * 180.0;
+}
+
+E3_POINT CrossvoerPointOfPlanes(const E3_PLANE& plane1, const E3_PLANE& plane2, const E3_PLANE& plane3)
+{
+	Eigen::Matrix<double, 3, 3>  matrix;
+	matrix << plane1.a, plane1.b, plane1.c
+			, plane2.a, plane2.b, plane2.c
+			, plane3.a, plane3.b, plane3.c;
+	Eigen::Vector3d vector(plane1.d, plane2.d, plane3.d);
+	Eigen::Vector3d result;
+
+	result = -(matrix.inverse() * vector);
+
+	return E3_POINT(result(0), result(1), result(2));
 }

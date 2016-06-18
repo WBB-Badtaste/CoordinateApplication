@@ -54,6 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>E:\eigen-eigen-07105f7124f9\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +106,7 @@
     <ClInclude Include="CoordinateApplicationDlg.h" />
     <ClInclude Include="DobotStatusDefine.h" />
     <ClInclude Include="CoordinateOperator.h" />
+    <ClInclude Include="E2_Point.h" />
     <ClInclude Include="E3_Line.h" />
     <ClInclude Include="E3_Plane.h" />
     <ClInclude Include="E3_Point.h" />
@@ -116,12 +118,15 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="CoordinateOperatorDefine.h" />
+    <ClInclude Include="Trajectory.h" />
+    <ClInclude Include="TrajectoryDefine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoordinateApplication.cpp" />
     <ClCompile Include="CoordinateApplicationDlg.cpp" />
     <ClCompile Include="DobotStatusHandle.cpp" />
     <ClCompile Include="CoordinateOperator.cpp" />
+    <ClCompile Include="E2_Point.cpp" />
     <ClCompile Include="E3_Line.cpp" />
     <ClCompile Include="E3_Plane.cpp" />
     <ClCompile Include="E3_Point.cpp" />
@@ -131,6 +136,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Trajectory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CoordinateApplication.rc" />

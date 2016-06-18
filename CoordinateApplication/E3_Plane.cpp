@@ -33,3 +33,12 @@ _e3_vector _e3_plane::NormalVector() const
 {
 	return E3_VECTOR(a, b, c);
 }
+
+_e3_plane::_e3_plane(const E3_POINT& point1, const E3_POINT& point2)
+{
+	E3_POINT buffer((point2 - point1) * 2);
+	a = buffer.x;
+	b = buffer.y;
+	c = buffer.z;
+	d = point1.QuadraticSum() - point2.QuadraticSum();
+}

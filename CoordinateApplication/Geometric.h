@@ -77,3 +77,13 @@ double Angle2Radian(const double &angle);
 @date: 2016-06-08
 */
 double Radian2Angle(const double &radian);
+
+
+/*
+@brief: Calculate the crossover point of three e3_plane
+@param[in]: radian
+@return: crossover point
+@author: JoMar
+@date: 2016-06-17
+*/
+E3_POINT CrossvoerPointOfPlanes(const E3_PLANE& plane1, const E3_PLANE& plane2, const E3_PLANE& plane3);

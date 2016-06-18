@@ -18,6 +18,13 @@ public:
 
 	_e3_plane(const E3_POINT& point, const E3_VECTOR& vector1, const E3_VECTOR& vector2);
 
+	/*
+	@brief: Create a plane in the middle of two points
+	@author: JoMar
+	@date: 2016-06-17
+	*/
+	_e3_plane(const E3_POINT& point1, const E3_POINT& point2);
+
 	~_e3_plane();
 
 	_e3_plane& operator=(const _e3_plane& object);

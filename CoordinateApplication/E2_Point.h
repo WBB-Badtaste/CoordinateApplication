@@ -1,42 +1,41 @@
 #pragma once
 
+#pragma once
+
 const double M_PI(atan2(0.0, -1.0));
 
 const double M_PI_2(M_PI / 2);
 
 
 /*
-@brief: This is a class of three-dimensional vector
+@brief: This is a class of two-dimensional vector
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-17
 */
-typedef class _e3_vector
+typedef class _e2_vector
 {
 public:
 
 	double x;
 	double y;
-	double z;
 
-	~_e3_vector();
+	~_e2_vector();
 
-	_e3_vector();
+	_e2_vector();
 
-	_e3_vector(const _e3_vector& newObject);
+	_e2_vector(const _e2_vector& newObject);
 
-	_e3_vector(double newX, double newY, double newZ) ;
+	_e2_vector(double newX, double newY);
 
-	_e3_vector& operator=(const _e3_vector& newObject);
+	_e2_vector& operator=(const _e2_vector& newObject);
 
-	_e3_vector& operator+=(const _e3_vector& object);
+	_e2_vector& operator+=(const _e2_vector& object);
 
-	_e3_vector operator-() const;
+	_e2_vector operator-() const;
 
-	friend _e3_vector operator-(const _e3_vector& objectL, const _e3_vector& objectR);
+	friend _e2_vector operator-(const _e2_vector& objectL, const _e2_vector& objectR);
 
-	friend _e3_vector operator*(const _e3_vector& objectL, const _e3_vector& objectR);
-
-	friend _e3_vector operator*(const _e3_vector& object, const double ratio);
+	friend _e2_vector operator*(const _e2_vector& object, const double ratio);
 
 
 	/*
@@ -44,7 +43,7 @@ public:
 	@note: radian system
 	@param[in]: radian
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
 	void Roll(const double &radian);
 
@@ -53,7 +52,7 @@ public:
 	@note: radian system
 	@param[in]: radian
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
 	void Pitch(const double &radian);
 
@@ -62,7 +61,7 @@ public:
 	@note: radian system
 	@param[in]: radian
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
 	void Yaw(const double &radian);
 
@@ -72,9 +71,9 @@ public:
 	@note: radian system
 	@param[in]: r - rotate martix
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
-	void Rotate(const _e3_vector &r);
+	void Rotate(const _e2_vector &r);
 
 	/*
 	@brief: This is a func to rotate a vector by a rotation matrix.
@@ -82,17 +81,17 @@ public:
 	@note: radian system
 	@param[in]: r - rotate martix
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
-	void InvRotate(const _e3_vector &r);
+	void InvRotate(const _e2_vector &r);
 
 	/*
 	@brief: This is a func to translation a vector by an translation marix.
 	@param[in]: t - translation marix
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
-	void Translation(const _e3_vector &t);
+	void Translation(const _e2_vector &t);
 
 	/*
 	@brief: This is a func to zoom a point.
@@ -106,7 +105,7 @@ public:
 	@brief: This is a func to calculate the module of a vector
 	@return: module
 	@author: JoMar
-	@date: 2016-06-08
+	@date: 2016-06-17
 	*/
 	double Module() const;
 
@@ -119,25 +118,26 @@ public:
 	double QuadraticSum() const;
 }
 /*
-@brief: This is a class of three-dimensional vector
+@brief: This is a class of two-dimensional vector
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-17
 */
-E3_VECTOR;
+E2_VECTOR;
 
 /*
-@brief: This is a class of three-dimensional point
+@brief: This is a class of two-dimensional point
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-17
 */
-typedef E3_VECTOR E3_POINT;
+typedef E2_VECTOR E2_POINT;
 
 /*
-@brief: This is a class of three-dimensional martix
+@brief: This is a class of two-dimensional martix
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-17
 */
-typedef E3_VECTOR E3_MARTIX;
+typedef E2_VECTOR E2_MARTIX;
+
 
 
 

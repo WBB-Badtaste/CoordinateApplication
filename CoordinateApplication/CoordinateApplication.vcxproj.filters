@@ -37,6 +37,9 @@
     <Filter Include="源文件\DobotStatusHandle">
       <UniqueIdentifier>{bd53dddf-aad6-4639-8f53-443be97e5a66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Trajectory">
+      <UniqueIdentifier>{0b9862d8-4bc5-4d73-9534-fcaa1d36025e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -87,6 +90,15 @@
     <ClInclude Include="DobotStatusHandle.h">
       <Filter>头文件\DobotStatusHandle</Filter>
     </ClInclude>
+    <ClInclude Include="Trajectory.h">
+      <Filter>头文件\Trajectory</Filter>
+    </ClInclude>
+    <ClInclude Include="TrajectoryDefine.h">
+      <Filter>头文件\Trajectory</Filter>
+    </ClInclude>
+    <ClInclude Include="E2_Point.h">
+      <Filter>头文件\Geometric</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoordinateApplication.cpp">
@@ -118,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="DobotStatusHandle.cpp">
       <Filter>源文件\DobotStatusHandle</Filter>
+    </ClCompile>
+    <ClCompile Include="Trajectory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="E2_Point.cpp">
+      <Filter>源文件\Geometric</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

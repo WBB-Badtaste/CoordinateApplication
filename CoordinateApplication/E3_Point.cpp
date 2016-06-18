@@ -3,11 +3,11 @@
 
 _e3_vector::~_e3_vector(){}
 
-_e3_vector::_e3_vector() :x(0), y(0), z(0){};
+_e3_vector::_e3_vector() :x(0), y(0), z(0){}
 
 _e3_vector::_e3_vector(const _e3_vector& newObject) : x(newObject.x), y(newObject.y), z(newObject.z){}
 
-_e3_vector::_e3_vector(double newX, double newY, double newZ) : x(newX), y(newY), z(newZ){};
+_e3_vector::_e3_vector(double newX, double newY, double newZ) : x(newX), y(newY), z(newZ){}
 
 _e3_vector& _e3_vector::operator=(const _e3_vector& newObject)
 {
@@ -33,7 +33,12 @@ _e3_vector operator*(const _e3_vector& objectL, const _e3_vector& objectR)
 		( objectL.y * objectR.z - objectL.z * objectR.y
 		, objectL.z * objectR.x - objectL.x * objectR.z
 		, objectL.x * objectR.y - objectL.y * objectR.x);
-};
+}
+
+_e3_vector operator*(const _e3_vector& object, const double ratio)
+{
+	return _e3_vector(object.x * ratio, object.y * ratio, object.z * ratio);
+}
 
 _e3_vector& _e3_vector::operator+=(const _e3_vector& object)
 {
@@ -92,5 +97,10 @@ void _e3_vector::Zoom(const double &ratio)
 
 double _e3_vector::Module() const
 {
-	return sqrt(x * x + y * y + z * z);
+	return sqrt(QuadraticSum());
+}
+
+double _e3_vector::QuadraticSum() const
+{
+	return x * x + y * y + z * z;
 }
