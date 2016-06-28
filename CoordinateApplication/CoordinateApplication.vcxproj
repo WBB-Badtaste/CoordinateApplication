@@ -106,10 +106,9 @@
     <ClInclude Include="CoordinateApplicationDlg.h" />
     <ClInclude Include="DobotStatusDefine.h" />
     <ClInclude Include="CoordinateOperator.h" />
-    <ClInclude Include="E2_Point.h" />
-    <ClInclude Include="E3_Line.h" />
-    <ClInclude Include="E3_Plane.h" />
-    <ClInclude Include="E3_Point.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="DobotStatusHandle.h" />
     <ClInclude Include="PalletOperator.h" />
     <ClInclude Include="PalletOperatorDefine.h" />
@@ -126,10 +125,9 @@
     <ClCompile Include="CoordinateApplicationDlg.cpp" />
     <ClCompile Include="DobotStatusHandle.cpp" />
     <ClCompile Include="CoordinateOperator.cpp" />
-    <ClCompile Include="E2_Point.cpp" />
-    <ClCompile Include="E3_Line.cpp" />
-    <ClCompile Include="E3_Plane.cpp" />
-    <ClCompile Include="E3_Point.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="PalletOperator.cpp" />
     <ClCompile Include="Geometric.cpp" />
     <ClCompile Include="stdafx.cpp">

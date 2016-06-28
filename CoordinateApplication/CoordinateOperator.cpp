@@ -6,13 +6,17 @@
 CCoordinateOperator::CCoordinateOperator()
 {
 	m_iter = m_vector_TM.begin();
-	E3_VECTOR t;
-	E3_VECTOR r;
-	double zoom(1.0);
 	unsigned id;
+	COORDINATE_MATRIX invMatrix;
+	invMatrix <<
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1;
 
+	COORDINATE_MATRIX forMatrix(invMatrix.inverse());
 	TCHAR *str(_T("世界坐标系"));
-	SetCoordinate(id, t, r, zoom, str, _tcslen(str));
+	SetCoordinate(id, forMatrix, invMatrix, str, _tcslen(str));
 }
 
 CCoordinateOperator::~CCoordinateOperator()
@@ -37,12 +41,12 @@ unsigned CCoordinateOperator::GetNewIdOfTransitionMartix()
 }
 
 DOBOT_STATUS CCoordinateOperator::SetCoordinate
-(unsigned &id
-,const E3_VECTOR &t
-, const E3_VECTOR &r
-, const double &zoom
+( unsigned &id
+, const COORDINATE_MATRIX &forwordMartix
+, const COORDINATE_MATRIX &inverseMartix
 , const TCHAR* const str
-, const unsigned &strSize)
+, const unsigned &strSize
+)
 {
 	NOTE note(strSize, str);
 
@@ -54,7 +58,7 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 		{
 			if (iter->coordinate_id == id)
 			{
-				iter->Reset(t, r, zoom, note);
+				iter->Reset(note, forwordMartix, inverseMartix);
 				return DOBOT_SUC_COORD_MODIFY;
 			}
 		}
@@ -63,7 +67,7 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 	id = GetNewIdOfTransitionMartix();
 
 	//Create a new martix base on the auto id.
-	COORDINATE coordinate(t, r, id, zoom, note);
+	COORDINATE coordinate(id, note, forwordMartix, inverseMartix);
 	m_vector_TM.push_back(coordinate);
 
 	//sort the vector
@@ -72,15 +76,15 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 	return DOBOT_SUC_COORD_CREATE;
 }
 
-
+/*
 DOBOT_STATUS CCoordinateOperator::SetCoordinate
-(unsigned &id
+( unsigned &id
 , const DOBOT_POSITION &p1_base
 , const DOBOT_POSITION &p2_base
 , const DOBOT_POSITION &p3_base
 , const TCHAR* const str
 , const unsigned &strSize
-, const bool& bParallelX/* = false*/)
+, const bool& bParallelX)
 {
 	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
 		return DOBOT_ERR_COORD_SET_MULTI_BASE;
@@ -131,6 +135,50 @@ DOBOT_STATUS CCoordinateOperator::SetCoordinate
 	
 	return SetCoordinate(id, t_target, r_target, COORDINATE_DEFAULT_ZOOM, str, strSize);
 }
+*/
+
+DOBOT_STATUS CCoordinateOperator::SetCoordinate
+(unsigned &id
+, const DOBOT_POSITION &p1_base
+, const DOBOT_POSITION &p2_base
+, const DOBOT_POSITION &p3_base
+, const TCHAR* const str
+, const unsigned &strSize
+, const bool& bParallelX/* = false*/)
+{
+	if (p1_base.coordinate_id != p2_base.coordinate_id || p1_base.coordinate_id != p3_base.coordinate_id)
+		return DOBOT_ERR_COORD_SET_MULTI_BASE;
+
+	//calculate the position of 3 points in the world coordinate.
+	DOBOT_POSITION p1_world(WORLD_COORDINATE_ID);
+	DOBOT_POSITION p2_world(WORLD_COORDINATE_ID);
+	DOBOT_POSITION p3_world(WORLD_COORDINATE_ID);
+	ConvertPosition(p1_base, p1_world);
+	ConvertPosition(p2_base, p2_world);
+	ConvertPosition(p3_base, p3_world);
+
+	E3_PLANE plane1(p1_world.position, p2_world.position - p1_world.position, p3_world.position - p1_world.position);
+	E3_PLANE plane2(p2_world.position, p1_world.position);
+	E3_PLANE plane2(p3_world.position, p1_world.position);
+
+	E3_VECTOR zVector(plane1.NormalVector());
+	E3_VECTOR xVector(plane2.NormalVector());
+
+	E3_VECTOR zDireCos(zVector / zVector.dot(zVector));
+	E3_VECTOR xDireCos(xVector / xVector.dot(xVector));
+	E3_VECTOR yDireCos(zDireCos.cross(xVector));
+
+	COORDINATE_MATRIX invMatrix;
+	invMatrix << 
+		xDireCos(0), xDireCos(1), xDireCos(2), 0,
+		yDireCos(0), yDireCos(1), yDireCos(2), 0,
+		zDireCos(0), zDireCos(1), zDireCos(2), 0,
+		p1_world.position(0), p1_world.position(1), p1_world.position(2), COORDINATE_DEFAULT_ZOOM;
+
+	COORDINATE_MATRIX forMatrix(invMatrix.inverse());
+
+	return SetCoordinate(id, forMatrix, invMatrix, str, strSize);
+}
 
 DOBOT_STATUS CCoordinateOperator::DeleteCoordinate(const unsigned& id)
 {
@@ -157,7 +205,7 @@ DOBOT_STATUS CCoordinateOperator::ConvertPosition(const DOBOT_POSITION &origin, 
 		target = origin;
 		return DOBOT_WAR_COORD_CONVERT_SAME;
 	}
-
+	
 	E3_POINT worldPosition(origin.position);
 
 	std::vector<COORDINATE>::const_iterator iter;
@@ -172,14 +220,15 @@ DOBOT_STATUS CCoordinateOperator::ConvertPosition(const DOBOT_POSITION &origin, 
 		if (iter == m_vector_TM.end())
 			return DOBOT_ERR_COORD_CONVERT_ORIGIN_NONEXISTENT;
 
-		//zoom
-		worldPosition.Zoom(1 / iter->zoom);
+		//inverse convert
+		CONVERT_VECTOR vOrigin, vTarget;
+		vOrigin << origin.position(0), origin.position(1), origin.position(2), 1.0;
 
-		//Rotate
-		worldPosition.InvRotate(-(iter->r));
+		vTarget = iter->inverseMartix * vOrigin;
 
-		//translation
-		worldPosition.Translation(-(iter->t));
+		worldPosition(0) = vTarget(0) / vTarget(3);
+		worldPosition(1) = vTarget(1) / vTarget(3);
+		worldPosition(2) = vTarget(2) / vTarget(3);
 	}
 
 	target.position = worldPosition;
@@ -194,14 +243,15 @@ DOBOT_STATUS CCoordinateOperator::ConvertPosition(const DOBOT_POSITION &origin, 
 		if (iter == m_vector_TM.end())
 			return DOBOT_ERR_COORD_CONVERT_TARGET_NONEXISTENT;
 
-		//translation
-		target.position.Translation(iter->t);
+		//forword convert
+		CONVERT_VECTOR vOrigin, vTarget;
+		vOrigin << worldPosition(0), worldPosition(1), worldPosition(2), 1.0;
 
-		//Rotate
-		target.position.Rotate(iter->r);
+		vTarget = iter->forwordMartix * vOrigin;
 
-		//zoom
-		target.position.Zoom(iter->zoom);
+		target.position(0) = vTarget(0) / vTarget(3);
+		target.position(1) = vTarget(1) / vTarget(3);
+		target.position(2) = vTarget(2) / vTarget(3);
 	}
 
 	return DOBOT_SUC_COORD_CONVERT;

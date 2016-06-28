@@ -29,18 +29,17 @@ public:
 
 	/*
 	@brief: This is a func to modify the coordinate. If the coordinate isn't existence, it will create a new one.
-	@note: Transition martix is base on the world coordinate. The convert sequence: translation->roll->ptich->yaw->zoom
+	@note: Transition martix is base on the world coordinate. 
 	@param[in|out]: id - coordinate id. Func will renturn a new Id, when the id isn't existence in vector;
-	@param[in]: t - translation martix.
-	@param[in]: r - rotation martix.
-	@param[in]: zoom
+	@param[in]: forwordMartix
+	@param[in]: inverseMartix
 	@param[in]: str - string of note
 	@param[in]: strSize - the size of string
 	@return:  dobot status code. Use "DobotGetStatusString" function to translate the status code.
 	@author: JoMar
-	@date: 2016-06-12
+	@date: 2016-06-22
 	*/
-	DOBOT_STATUS SetCoordinate(unsigned &id, const E3_VECTOR &t, const E3_VECTOR &r, const double &zoom, const TCHAR* const str, const unsigned &strSize);
+	DOBOT_STATUS SetCoordinate(unsigned &id, const COORDINATE_MATRIX &forwordMartix, const COORDINATE_MATRIX &inverseMartix, const TCHAR* const str, const unsigned &strSize);
 
 	/*
 	@brief: This is a func to modify the coordinate by using 3 special point. If the coordinate isn't existence, it will create a new one.
@@ -104,7 +103,7 @@ private:
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	std::vector<COORDINATE> m_vector_TM;	
+	std::vector<COORDINATE> m_vector_TM;
 
 	/*
 	@brief: a point witch pointing the vector used in ergodicing

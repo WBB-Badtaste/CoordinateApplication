@@ -101,9 +101,9 @@ private:
 		for (unsigned j = 0; j < zoneNumY; ++j)
 		{
 			user_points[i][j].coordinate_id = newCoordinateId;
-			user_points[i][j].position.x = xLenght / (zoneNumX - 1) * i;
-			user_points[i][j].position.y = yLenght / (zoneNumY - 1) * j;
-			user_points[i][j].position.z = 0;
+			user_points[i][j].position(0) = xLenght / (zoneNumX - 1) * i;
+			user_points[i][j].position(1) = yLenght / (zoneNumY - 1) * j;
+			user_points[i][j].position(2) = 0;
 		}
 	}
 

@@ -1,22 +1,16 @@
 #include "stdafx.h"
 #include "Geometric.h"
-#include "Eigen\Dense"
 
 
 double CalLenght(const E3_POINT &point1, const E3_POINT &point2)
 {
-	return sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y) + (point1.z - point2.z) * (point1.z - point2.z));
-}
-
-double Dot(const E3_VECTOR &vector1, const E3_VECTOR &vector2)
-{
-
-	return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
+	E3_VECTOR vP12(point2 - point1);
+	return sqrt(vP12.dot(vP12));
 }
 
 double CalRadian(const E3_VECTOR &vector1, const E3_VECTOR &vector2)
 {
-	return acos(Dot(vector1, vector2) / vector1.Module() / vector2.Module());
+	return acos(vector1.dot(vector2) / sqrt(vector1.dot(vector1)) / sqrt(vector2.dot(vector2)));
 }
 
 double CalRadian(const E3_VECTOR& vector, const E3_PLANE& plane)

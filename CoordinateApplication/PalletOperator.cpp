@@ -50,8 +50,11 @@ DOBOT_STATUS CPalletOperator::SetPallet(unsigned &palletId, const DOBOT_POSITION
 		return DOBOT_ERR_PALLET_SET_ZONE_LESS;
 	}
 
-	double xLenght((p2.position - p1.position).Module());
-	double yLenght((p3.position - p1.position).Module());
+	E3_VECTOR vP12(p2.position - p1.position);
+	E3_VECTOR vP13(p3.position - p1.position);
+	
+	double xLenght(sqrt(vP12.dot(vP12)));
+	double yLenght(sqrt(vP13.dot(vP13)));
 
 	if (xLenght <= 0 || yLenght <=0)
 	{

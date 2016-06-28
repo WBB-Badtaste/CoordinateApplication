@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "E3_Line.h"
+#include "Line.h"
 
 
 _e3_line::~_e3_line(){}
@@ -11,24 +11,24 @@ _e3_line::_e3_line(const _e3_line& newObject) :S(newObject.S), C(newObject.C){}
 _e3_line::_e3_line(const STANDARD& newS) :S(newS)
 {
 	
-	C.plane1.a = S.direction.y;
-	C.plane1.b = -S.direction.x;
+	C.plane1.a = S.direction(1);
+	C.plane1.b = -S.direction(0);
 	C.plane1.c = 0;
-	C.plane1.d = S.direction.x * S.point.y - S.direction.y * S.point.x;
+	C.plane1.d = S.direction(0) * S.point(1) - S.direction(1) * S.point(0);
 
 	C.plane2.a = 0;
-	C.plane2.b = S.direction.z;
-	C.plane2.c = -S.direction.y;
-	C.plane2.d = S.direction.y * S.point.z - S.direction.z * S.point.y;
+	C.plane2.b = S.direction(2);
+	C.plane2.c = -S.direction(1);
+	C.plane2.d = S.direction(1) * S.point(2) - S.direction(2) * S.point(1);
 }
 
 _e3_line::_e3_line(const COMMON& newC) :C(newC)
 {
 	S.direction = C.plane1.NormalVector() * C.plane2.NormalVector();
 
-	S.point.x = (C.plane2.d - C.plane1.d * C.plane2.b / C.plane1.b) / (C.plane1.a * C.plane2.b / C.plane1.b - C.plane2.a);
-	S.point.y = -(S.point.x * C.plane1.a + C.plane1.d) / C.plane1.b;
-	S.point.z = 0;
+	S.point(0) = (C.plane2.d - C.plane1.d * C.plane2.b / C.plane1.b) / (C.plane1.a * C.plane2.b / C.plane1.b - C.plane2.a);
+	S.point(1) = -(S.point(0) * C.plane1.a + C.plane1.d) / C.plane1.b;
+	S.point(2) = 0;
 }
 
 _e3_line::_e3_line(const E3_POINT& point1, const E3_POINT& point2)

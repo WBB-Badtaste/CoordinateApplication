@@ -40,6 +40,9 @@
     <Filter Include="头文件\Trajectory">
       <UniqueIdentifier>{0b9862d8-4bc5-4d73-9534-fcaa1d36025e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Trajectory">
+      <UniqueIdentifier>{71055956-0f1a-4299-a9d7-2e614832a97b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -59,15 +62,6 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="E3_Line.h">
-      <Filter>头文件\Geometric</Filter>
-    </ClInclude>
-    <ClInclude Include="E3_Plane.h">
-      <Filter>头文件\Geometric</Filter>
-    </ClInclude>
-    <ClInclude Include="E3_Point.h">
-      <Filter>头文件\Geometric</Filter>
     </ClInclude>
     <ClInclude Include="Geometric.h">
       <Filter>头文件\Geometric</Filter>
@@ -96,7 +90,13 @@
     <ClInclude Include="TrajectoryDefine.h">
       <Filter>头文件\Trajectory</Filter>
     </ClInclude>
-    <ClInclude Include="E2_Point.h">
+    <ClInclude Include="Point.h">
+      <Filter>头文件\Geometric</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>头文件\Geometric</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
       <Filter>头文件\Geometric</Filter>
     </ClInclude>
   </ItemGroup>
@@ -109,15 +109,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="E3_Line.cpp">
-      <Filter>源文件\Geometric</Filter>
-    </ClCompile>
-    <ClCompile Include="E3_Plane.cpp">
-      <Filter>源文件\Geometric</Filter>
-    </ClCompile>
-    <ClCompile Include="E3_Point.cpp">
-      <Filter>源文件\Geometric</Filter>
     </ClCompile>
     <ClCompile Include="Geometric.cpp">
       <Filter>源文件\Geometric</Filter>
@@ -132,9 +123,15 @@
       <Filter>源文件\DobotStatusHandle</Filter>
     </ClCompile>
     <ClCompile Include="Trajectory.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Trajectory</Filter>
     </ClCompile>
-    <ClCompile Include="E2_Point.cpp">
+    <ClCompile Include="Point.cpp">
+      <Filter>源文件\Geometric</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>源文件\Geometric</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
       <Filter>源文件\Geometric</Filter>
     </ClCompile>
   </ItemGroup>

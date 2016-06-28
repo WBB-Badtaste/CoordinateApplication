@@ -292,19 +292,17 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 	if (!m_radio_setType)
 	{//manual
 		E3_VECTOR r;
-		r.x = Angle2Radian(m_rotate_x);
-		r.y = Angle2Radian(m_rotate_y);
-		r.z = Angle2Radian(m_rotate_z);
+		r(0) = Angle2Radian(m_rotate_x);
+		r(1) = Angle2Radian(m_rotate_y);
+		r(2) = Angle2Radian(m_rotate_z);
 
 		E3_VECTOR t;
-		t.x = m_trans_x;
-		t.y = m_trans_y;
-		t.z = m_trans_z;
+		t(0) = m_trans_x;
+		t(1) = m_trans_y;
+		t(2) = m_trans_z;
 
-		double zoom = m_ratio;
-
-		if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
-			return;
+//		if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
+//			return;
 	}
 	else
 	{//auto
@@ -312,15 +310,15 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreateCoord()
 		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_comboBox_base_coordinate.GetCurSel(), coordinateId_base)))
 		{
 			DOBOT_POSITION p1(coordinateId_base), p2(coordinateId_base), p3(coordinateId_base);
-			p1.position.x = coordinate_point1_x;
-			p1.position.y = coordinate_point1_y;
-			p1.position.z = coordinate_point1_z;
-			p2.position.x = coordinate_point2_x;
-			p2.position.y = coordinate_point2_y;
-			p2.position.z = coordinate_point2_z;
-			p3.position.x = coordinate_point3_x;
-			p3.position.y = coordinate_point3_y;
-			p3.position.z = coordinate_point3_z;
+			p1.position(0) = coordinate_point1_x;
+			p1.position(1) = coordinate_point1_y;
+			p1.position(2) = coordinate_point1_z;
+			p2.position(0) = coordinate_point2_x;
+			p2.position(1) = coordinate_point2_y;
+			p2.position(2) = coordinate_point2_z;
+			p3.position(0) = coordinate_point3_x;
+			p3.position(1) = coordinate_point3_y;
+			p3.position(2) = coordinate_point3_z;
 
 			if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
 				return;
@@ -451,19 +449,17 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 	if (!m_radio_setType)
 	{//manual
 		E3_VECTOR r;
-		r.x = m_rotate_x;
-		r.y = m_rotate_y;
-		r.z = m_rotate_z;
+		r(0) = m_rotate_x;
+		r(1) = m_rotate_y;
+		r(2) = m_rotate_z;
 
 		E3_VECTOR t;
-		t.x = m_trans_x;
-		t.y = m_trans_y;
-		t.z = m_trans_z;
+		t(0) = m_trans_x;
+		t(1) = m_trans_y;
+		t(2) = m_trans_z;
 
-		double zoom = m_ratio;
-
-		if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
-			return;
+//		if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, t, r, zoom, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
+//			return;
 	}
 	else
 	{//auto
@@ -473,15 +469,15 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangeCoord()
 		if (DobotSuccess(m_pCoordinateOperator->GetCoordianteId(index, coordinateId_base)))
 		{
 			DOBOT_POSITION p1(coordinateId_base), p2(coordinateId_base), p3(coordinateId_base);
-			p1.position.x = coordinate_point1_x;
-			p1.position.y = coordinate_point1_y;
-			p1.position.z = coordinate_point1_z;
-			p2.position.x = coordinate_point2_x;
-			p2.position.y = coordinate_point2_y;
-			p2.position.z = coordinate_point2_z;
-			p3.position.x = coordinate_point3_x;
-			p3.position.y = coordinate_point3_y;
-			p3.position.z = coordinate_point3_z;
+			p1.position(0) = coordinate_point1_x;
+			p1.position(1) = coordinate_point1_y;
+			p1.position(2) = coordinate_point1_z;
+			p2.position(0) = coordinate_point2_x;
+			p2.position(1) = coordinate_point2_y;
+			p2.position(2) = coordinate_point2_z;
+			p3.position(0) = coordinate_point3_x;
+			p3.position(1) = coordinate_point3_y;
+			p3.position(2) = coordinate_point3_z;
 
 			if (DobotError(m_pCoordinateOperator->SetCoordinate(coordinateId_target, p1, p2, p3, (TCHAR*)m_coordinate_note.GetBuffer(0), strSize)))
 				return;
@@ -521,26 +517,26 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 				p2(baseCoordinateIdOfPoint),
 				p3(baseCoordinateIdOfPoint);
 
-			p1.position.x = m_point1_pallet_x;
-			p1.position.y = m_point1_pallet_y;
-			p1.position.z = m_point1_pallet_z;
-			p2.position.x = m_point2_pallet_x;
-			p2.position.y = m_point2_pallet_y;
-			p2.position.z = m_point2_pallet_z;
-			p3.position.x = m_point3_pallet_x;
-			p3.position.y = m_point3_pallet_y;
-			p3.position.z = m_point3_pallet_z;
+			p1.position(0) = m_point1_pallet_x;
+			p1.position(1) = m_point1_pallet_y;
+			p1.position(2) = m_point1_pallet_z;
+			p2.position(0) = m_point2_pallet_x;
+			p2.position(1) = m_point2_pallet_y;
+			p2.position(2) = m_point2_pallet_z;
+			p3.position(0) = m_point3_pallet_x;
+			p3.position(1) = m_point3_pallet_y;
+			p3.position(2) = m_point3_pallet_z;
 
 			if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet)))
 			{
 				m_pCoordinateOperator->DeleteCoordinate(baseCoordinateIndex);
 				return;
 			}
-				
 
 			UpdateCoordinate();
 		}
 		break;
+
 	case 1:
 		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_combo_pallet_in_coordinate.GetCurSel(), baseCoordinateIdOfPallet)))
 			return;
@@ -549,6 +545,7 @@ void CCoordinateApplicationDlg::OnBnClickedButtonCreatePallet()
 			return;
 		
 		break;
+
 	case 2:
 		if (DobotError(m_pCoordinateOperator->GetCoordianteId(m_combox_pallet_copy_coordinate.GetCurSel(), baseCoordinateIdOfPallet)))
 			return;
@@ -681,15 +678,15 @@ void CCoordinateApplicationDlg::OnBnClickedButtonChangePallet()
 				p2(baseCoordinateIdOfPoint),
 				p3(baseCoordinateIdOfPoint);
 
-			p1.position.x = m_point1_pallet_x;
-			p1.position.y = m_point1_pallet_y;
-			p1.position.z = m_point1_pallet_z;
-			p2.position.x = m_point2_pallet_x;
-			p2.position.y = m_point2_pallet_y;
-			p2.position.z = m_point2_pallet_z;
-			p3.position.x = m_point3_pallet_x;
-			p3.position.y = m_point3_pallet_y;
-			p3.position.z = m_point3_pallet_z;
+			p1.position(0) = m_point1_pallet_x;
+			p1.position(1) = m_point1_pallet_y;
+			p1.position(2) = m_point1_pallet_z;
+			p2.position(0) = m_point2_pallet_x;
+			p2.position(1) = m_point2_pallet_y;
+			p2.position(2) = m_point2_pallet_z;
+			p3.position(0) = m_point3_pallet_x;
+			p3.position(1) = m_point3_pallet_y;
+			p3.position(2) = m_point3_pallet_z;
 
 			if (DobotError(m_pPallerOperator->SetPallet(idOfPallet, p1, p2, p3, m_x_amount_pallet, m_y_amount_pallet)))
 			{

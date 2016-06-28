@@ -1,7 +1,7 @@
 #pragma once
 
-#include "E3_Point.h"
-#include "E3_Plane.h"
+#include "Point.h"
+#include "Plane.h"
 
 /*
 @brief: This is a struct to store parameters of standard line-equation which in three-dimensional

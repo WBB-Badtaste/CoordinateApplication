@@ -118,71 +118,86 @@ typedef struct _note
 */
 NOTE;
 
+
+/*
+@brief: There is a matrix witch used for convert position between two coordinate
+@author: JoMar
+@date: 2016-06-20
+*/
+typedef Eigen::Matrix<double, 4, 4> COORDINATE_MATRIX;
+
+/*
+@brief: There is a vector witch used for convert position between two coordinate
+@author: JoMar
+@date: 2016-06-22
+*/
+typedef Eigen::Matrix<double, 1, 4> CONVERT_VECTOR;
+
+
 /*
 @brief: There is a struct of coordinate
-@note: Transition martix is base on the world coordinate.The convert sequence : translation->roll->ptich->yaw->zoom
+@note: Transition martix is base on the world coordinate.
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-22
 */
 typedef struct _coordinate
 {
+	
 	unsigned coordinate_id;
-	E3_VECTOR t;
-	E3_VECTOR r;
-	double zoom;
 	NOTE note;
+	COORDINATE_MATRIX forwordMartix;
+	COORDINATE_MATRIX inverseMartix;
 
-	_coordinate() :coordinate_id(0), zoom(1.0){};
+	_coordinate() :coordinate_id(0){};
 
-	_coordinate(const _coordinate & newObject)
-		: coordinate_id(newObject.coordinate_id)
-		, t(newObject.t)
-		, r(newObject.r)
-		, zoom(newObject.zoom)
-		, note(newObject.note){};
+	
+	_coordinate(const _coordinate & object)
+		: coordinate_id(object.coordinate_id)
+		, note(object.note)
+		, forwordMartix(object.forwordMartix)
+		, inverseMartix(object.inverseMartix){};
+		
 
-	_coordinate& operator=(const _coordinate & newObject)
+	_coordinate& operator=(const _coordinate & object)
 	{
-		coordinate_id = newObject.coordinate_id;
-		t = newObject.t;
-		r = newObject.r;
-		zoom = newObject.zoom;
-		note = newObject.note;
+		coordinate_id = object.coordinate_id;
+		note = object.note;
+		forwordMartix = object.forwordMartix;
+		inverseMartix = object.inverseMartix;
 		return *this;
 	};
 
 
 	_coordinate
-		(const E3_VECTOR &newT
-		, const E3_VECTOR &newR
-		, const unsigned &newId
-		, const double &newZoom
-		, const NOTE &newNote) : t(newT), r(newR), coordinate_id(newId), zoom(newZoom), note(newNote)
+		(
+		  const unsigned &newId
+		, const NOTE &newNote
+		, const COORDINATE_MATRIX &newForwordMartix
+		, const COORDINATE_MATRIX &newInverseMartix) : coordinate_id(newId), note(newNote), inverseMartix(newInverseMartix), forwordMartix(newForwordMartix)
 	{};
 
 	/*
 	@brief: it a function to reset the paramers of coordinate
-	@param[in]: newT - translation martix
-	@param[in]: newR - rotation martix
+	@param[in]: newForwordMartix - translation martix used for forword converting
+	@param[in]: newInverseMartix - translation martix used for inverse converting
 	@param[in]: newZoom - zoom ratio
 	@param[in]: newNote - note
 	@author: JoMar
 	@date: 2016-06-12
 	*/
-	void Reset(const E3_VECTOR& newT, const E3_VECTOR& newR, const double& newZoom, const NOTE& newNote) 
+	void Reset(const NOTE& newNote, const COORDINATE_MATRIX &newForwordMartix, const COORDINATE_MATRIX &newInverseMartix)
 	{
-		t = newT;
-		r = newR;
-		zoom = newZoom;
 		note = newNote;
+		forwordMartix = newForwordMartix;
+		inverseMartix = newInverseMartix;
 	};
 
 	
 }
 /*
 @brief: There is a struct of coordinate
-@note: Transition martix is base on the world coordinate.The convert sequence : translation->roll->ptich->yaw->zoom
+@note: Transition martix is base on the world coordinate.
 @author: JoMar
-@date: 2016-06-08
+@date: 2016-06-22
 */
 COORDINATE;
